@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.datingapp.domain.model.User
 import com.example.datingapp.presentation.ui.theme.*
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 @Composable
@@ -28,38 +29,38 @@ fun SwipeableCard(
 ) {
     var offsetX by remember { mutableFloatStateOf(0f) }
     var offsetY by remember { mutableFloatStateOf(0f) }
-    var isDragging by remember { mutableStateOf(false) }
 
-    val animatedOffsetX by animateFloatAsState(
-        targetValue = offsetX,
-        animationSpec = if (isDragging) {
-            spring(dampingRatio = Spring.DampingRatioNoBouncy, stiffness = Spring.StiffnessLow)
-        } else {
-            spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessMediumLow)
-        },
-        label = "offsetX"
-    )
+    val animatedOffsetX = remember { Animatable(0f) }
+    val animatedOffsetY = remember { Animatable(0f) }
+    val coroutineScope = rememberCoroutineScope()
 
-    val rotation = (animatedOffsetX / 20f).coerceIn(-15f, 15f)
+    // Sync animated values with offset during drag
+    LaunchedEffect(offsetX) {
+        animatedOffsetX.snapTo(offsetX)
+    }
+
+    LaunchedEffect(offsetY) {
+        animatedOffsetY.snapTo(offsetY)
+    }
+
+    val rotation = (animatedOffsetX.value / 20f).coerceIn(-15f, 15f)
     val swipeThreshold = 300f
 
     // Calculate alpha for swipe indicators
-    val swipeProgress = (abs(animatedOffsetX) / swipeThreshold).coerceIn(0f, 1f)
+    val swipeProgress = (abs(animatedOffsetX.value) / swipeThreshold).coerceIn(0f, 1f)
 
     Box(
         modifier = modifier
             .fillMaxWidth()
             .aspectRatio(0.7f)
             .graphicsLayer {
-                translationX = animatedOffsetX
-                translationY = offsetY
+                translationX = animatedOffsetX.value
+                translationY = animatedOffsetY.value
                 rotationZ = rotation
             }
             .pointerInput(Unit) {
                 detectDragGestures(
-                    onDragStart = { isDragging = true },
                     onDragEnd = {
-                        isDragging = false
                         when {
                             offsetX > swipeThreshold -> {
                                 // Swipe right - Like
@@ -70,14 +71,41 @@ fun SwipeableCard(
                                 onSwipeLeft()
                             }
                             else -> {
-                                // Return to center
+                                // Return to center with animation
+                                coroutineScope.launch {
+                                    launch {
+                                        animatedOffsetX.animateTo(
+                                            targetValue = 0f,
+                                            animationSpec = spring(
+                                                dampingRatio = Spring.DampingRatioMediumBouncy,
+                                                stiffness = Spring.StiffnessMedium
+                                            )
+                                        )
+                                    }
+                                    launch {
+                                        animatedOffsetY.animateTo(
+                                            targetValue = 0f,
+                                            animationSpec = spring(
+                                                dampingRatio = Spring.DampingRatioMediumBouncy,
+                                                stiffness = Spring.StiffnessMedium
+                                            )
+                                        )
+                                    }
+                                }
                                 offsetX = 0f
                                 offsetY = 0f
                             }
                         }
                     },
                     onDragCancel = {
-                        isDragging = false
+                        coroutineScope.launch {
+                            launch {
+                                animatedOffsetX.animateTo(0f, spring())
+                            }
+                            launch {
+                                animatedOffsetY.animateTo(0f, spring())
+                            }
+                        }
                         offsetX = 0f
                         offsetY = 0f
                     },
