@@ -27,6 +27,7 @@ fun MainScreen(
 ) {
     val users = remember { getDummyUsers().toMutableStateList() }
     var currentIndex by remember { mutableIntStateOf(0) }
+    val cardState = remember { SwipeableCardState() }
 
     Box(
         modifier = Modifier
@@ -44,8 +45,7 @@ fun MainScreen(
             Box(
                 modifier = Modifier
                     .weight(1f)
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 16.dp),
+                    .fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
                 if (currentIndex < users.size) {
@@ -53,7 +53,7 @@ fun MainScreen(
                     if (currentIndex + 2 < users.size) {
                         CardPlaceholder(
                             modifier = Modifier
-                                .fillMaxWidth()
+                                .fillMaxSize()
                                 .offset(y = 16.dp)
                                 .padding(horizontal = 16.dp),
                             scale = 0.9f
@@ -63,33 +63,38 @@ fun MainScreen(
                     if (currentIndex + 1 < users.size) {
                         CardPlaceholder(
                             modifier = Modifier
-                                .fillMaxWidth()
+                                .fillMaxSize()
                                 .offset(y = 8.dp)
                                 .padding(horizontal = 8.dp),
                             scale = 0.95f
                         )
                     }
 
-                    // Current card
-                    SwipeableCard(
-                        user = users[currentIndex],
-                        onSwipeLeft = {
-                            // Dislike action
-                            currentIndex++
-                            if (currentIndex >= users.size) {
-                                // Reload users or show "no more users" message
-                                currentIndex = 0
-                            }
-                        },
-                        onSwipeRight = {
-                            // Like action
-                            currentIndex++
-                            if (currentIndex >= users.size) {
-                                currentIndex = 0
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    // Current card - key forces recomposition when index changes
+                    key(currentIndex) {
+                        SwipeableCard(
+                            user = users[currentIndex],
+                            state = cardState,
+                            onSwipeLeft = {
+                                // Dislike action
+                                currentIndex++
+                                if (currentIndex >= users.size) {
+                                    // Reload users or show "no more users" message
+                                    currentIndex = 0
+                                }
+                            },
+                            onSwipeRight = {
+                                // Like action
+                                currentIndex++
+                                if (currentIndex >= users.size) {
+                                    currentIndex = 0
+                                }
+                            },
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp)
+                        )
+                    }
                 } else {
                     // No more users
                     NoMoreUsersMessage(
@@ -102,17 +107,15 @@ fun MainScreen(
             if (currentIndex < users.size) {
                 ActionButtonsRow(
                     onDislike = {
-                        currentIndex++
-                        if (currentIndex >= users.size) currentIndex = 0
+                        cardState.swipeLeft()
                     },
                     onSuperLike = {
-                        // Super like action
+                        // Super like action - можно добавить позже
                         currentIndex++
                         if (currentIndex >= users.size) currentIndex = 0
                     },
                     onLike = {
-                        currentIndex++
-                        if (currentIndex >= users.size) currentIndex = 0
+                        cardState.swipeRight()
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -130,7 +133,6 @@ fun CardPlaceholder(
 ) {
     Box(
         modifier = modifier
-            .aspectRatio(0.7f)
     ) {
         Card(
             modifier = Modifier
