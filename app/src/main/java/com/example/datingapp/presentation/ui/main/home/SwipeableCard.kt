@@ -5,6 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,8 +15,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import coil.compose.SubcomposeAsyncImage
 import com.example.datingapp.domain.model.User
 import com.example.datingapp.presentation.ui.theme.*
 import kotlinx.coroutines.launch
@@ -126,19 +130,57 @@ fun SwipeableCard(
             Box(
                 modifier = Modifier.fillMaxSize()
             ) {
-                // Placeholder for photo (gradient background)
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            brush = Brush.linearGradient(
-                                colors = listOf(
-                                    SoftPink,
-                                    LightViolet,
-                                    DeepPink.copy(alpha = 0.6f)
-                                )
+                // User Photo with Coil
+                SubcomposeAsyncImage(
+                    model = user.photoUrl,
+                    contentDescription = "Photo of ${user.name}",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize(),
+                    loading = {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    brush = Brush.linearGradient(
+                                        colors = listOf(
+                                            SoftPink.copy(alpha = 0.3f),
+                                            LightViolet.copy(alpha = 0.3f),
+                                            SoftPink.copy(alpha = 0.3f)
+                                        )
+                                    )
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(
+                                color = DeepPink,
+                                strokeWidth = 3.dp,
+                                modifier = Modifier.size(48.dp)
                             )
-                        )
+                        }
+                    },
+                    error = {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    brush = Brush.linearGradient(
+                                        colors = listOf(
+                                            SoftPink,
+                                            LightViolet,
+                                            DeepPink.copy(alpha = 0.6f)
+                                        )
+                                    )
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.Person,
+                                contentDescription = "Default avatar",
+                                tint = Color.White.copy(alpha = 0.5f),
+                                modifier = Modifier.size(120.dp)
+                            )
+                        }
+                    }
                 )
 
                 // Swipe Left Indicator

@@ -17,6 +17,7 @@ fun getDummyUsers(): List<User> = listOf(
         name = "Анна",
         age = 25,
         bio = "Люблю путешествовать и фотографировать закаты 🌅",
+        photoUrl = "https://picsum.photos/seed/user1/400/600",
         distance = 2,
         interests = listOf("Путешествия", "Фотография", "Кофе")
     ),
@@ -25,6 +26,7 @@ fun getDummyUsers(): List<User> = listOf(
         name = "Мария",
         age = 23,
         bio = "Танцую сальсу, обожаю латиноамериканскую кухню 💃",
+        photoUrl = "https://picsum.photos/seed/user2/400/600",
         distance = 5,
         interests = listOf("Танцы", "Кулинария", "Музыка")
     ),
@@ -33,6 +35,7 @@ fun getDummyUsers(): List<User> = listOf(
         name = "Елена",
         age = 27,
         bio = "Книжный червь и любительница котиков 📚🐱",
+        photoUrl = "https://picsum.photos/seed/user3/400/600",
         distance = 3,
         interests = listOf("Чтение", "Животные", "Кино")
     ),
@@ -41,6 +44,7 @@ fun getDummyUsers(): List<User> = listOf(
         name = "Дарья",
         age = 24,
         bio = "Фитнес-тренер, ЗОЖ и позитив ✨",
+        photoUrl = "https://picsum.photos/seed/user4/400/600",
         distance = 1,
         interests = listOf("Фитнес", "ЗОЖ", "Йога")
     ),
@@ -49,6 +53,7 @@ fun getDummyUsers(): List<User> = listOf(
         name = "Виктория",
         age = 26,
         bio = "Художница, ищу музу и вдохновение 🎨",
+        photoUrl = "https://picsum.photos/seed/user5/400/600",
         distance = 4,
         interests = listOf("Искусство", "Живопись", "Галереи")
     ),
@@ -57,6 +62,7 @@ fun getDummyUsers(): List<User> = listOf(
         name = "Ольга",
         age = 28,
         bio = "Любительница активного отдыха и гор 🏔️",
+        photoUrl = "https://picsum.photos/seed/user6/400/600",
         distance = 6,
         interests = listOf("Горы", "Туризм", "Природа")
     ),
@@ -65,6 +71,7 @@ fun getDummyUsers(): List<User> = listOf(
         name = "Екатерина",
         age = 22,
         bio = "Студентка, меломан, люблю концерты 🎵",
+        photoUrl = "https://picsum.photos/seed/user7/400/600",
         distance = 2,
         interests = listOf("Музыка", "Концерты", "Учеба")
     ),
@@ -73,6 +80,7 @@ fun getDummyUsers(): List<User> = listOf(
         name = "Анастасия",
         age = 29,
         bio = "Маркетолог и travel blogger 🌍",
+        photoUrl = "https://picsum.photos/seed/user8/400/600",
         distance = 7,
         interests = listOf("Маркетинг", "Блоггинг", "Путешествия")
     ),
@@ -81,6 +89,7 @@ fun getDummyUsers(): List<User> = listOf(
         name = "Полина",
         age = 24,
         bio = "Шеф-повар, готовлю с любовью ❤️🍝",
+        photoUrl = "https://picsum.photos/seed/user9/400/600",
         distance = 3,
         interests = listOf("Кулинария", "Рестораны", "Гастрономия")
     ),
@@ -89,6 +98,7 @@ fun getDummyUsers(): List<User> = listOf(
         name = "София",
         age = 25,
         bio = "Психолог, интересуюсь людьми и их историями 🧠",
+        photoUrl = "https://picsum.photos/seed/user10/400/600",
         distance = 4,
         interests = listOf("Психология", "Общение", "Развитие")
     )

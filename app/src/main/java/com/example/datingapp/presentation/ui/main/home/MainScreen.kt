@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import com.example.datingapp.domain.model.getDummyUsers
 import com.example.datingapp.presentation.ui.theme.*
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     onNavigateToProfile: () -> Unit = {},
@@ -41,48 +40,12 @@ fun MainScreen(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            // Top Bar
-            TopAppBar(
-                title = {
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "💕",
-                            style = MaterialTheme.typography.headlineLarge
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateToProfile) {
-                        Icon(
-                            imageVector = Icons.Rounded.Person,
-                            contentDescription = "Profile",
-                            tint = DeepPink
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = onNavigateToChat) {
-                        Icon(
-                            imageVector = Icons.Rounded.Email,
-                            contentDescription = "Chats",
-                            tint = DeepPink
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent
-                )
-            )
-
             // Card Stack
             Box(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = 16.dp, vertical = 16.dp),
                 contentAlignment = Alignment.Center
             ) {
                 if (currentIndex < users.size) {

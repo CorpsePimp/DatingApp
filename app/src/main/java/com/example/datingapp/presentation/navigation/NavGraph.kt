@@ -8,12 +8,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.datingapp.presentation.ui.auth.login.LoginScreen
 import com.example.datingapp.presentation.ui.auth.register.RegisterScreen
-import com.example.datingapp.presentation.ui.main.home.MainScreen
+import com.example.datingapp.presentation.ui.main.MainScaffold
 
 sealed class Screen(val route: String) {
     object Login : Screen("login")
     object Register : Screen("register")
     object Main : Screen("main")
+    object Likes : Screen("likes")
+    object Cards : Screen("cards")
     object Profile : Screen("profile")
     object Chat : Screen("chat")
 }
@@ -97,60 +99,7 @@ fun AppNavGraph(
                 fadeOut(animationSpec = tween(400))
             }
         ) {
-            MainScreen(
-                onNavigateToProfile = {
-                    navController.navigate(Screen.Profile.route)
-                },
-                onNavigateToChat = {
-                    navController.navigate(Screen.Chat.route)
-                }
-            )
-        }
-
-        // Profile Screen (Placeholder)
-        composable(
-            route = Screen.Profile.route,
-            enterTransition = {
-                slideInHorizontally(
-                    initialOffsetX = { -it },
-                    animationSpec = tween(400)
-                ) + fadeIn()
-            },
-            exitTransition = {
-                slideOutHorizontally(
-                    targetOffsetX = { -it },
-                    animationSpec = tween(400)
-                ) + fadeOut()
-            }
-        ) {
-            PlaceholderScreen(
-                title = "Profile",
-                emoji = "👤",
-                onBack = { navController.popBackStack() }
-            )
-        }
-
-        // Chat Screen (Placeholder)
-        composable(
-            route = Screen.Chat.route,
-            enterTransition = {
-                slideInHorizontally(
-                    initialOffsetX = { it },
-                    animationSpec = tween(400)
-                ) + fadeIn()
-            },
-            exitTransition = {
-                slideOutHorizontally(
-                    targetOffsetX = { it },
-                    animationSpec = tween(400)
-                ) + fadeOut()
-            }
-        ) {
-            PlaceholderScreen(
-                title = "Chats",
-                emoji = "💬",
-                onBack = { navController.popBackStack() }
-            )
+            MainScaffold(navController = navController)
         }
     }
 }
