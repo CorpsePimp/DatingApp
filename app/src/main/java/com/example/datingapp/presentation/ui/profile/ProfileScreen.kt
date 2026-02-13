@@ -3,6 +3,7 @@ package com.example.datingapp.presentation.ui.profile
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -98,24 +99,59 @@ private fun ProfileHeader(onSettingsClick: () -> Unit) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = "Профиль",
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-            color = TextPrimary
-        )
-
-        IconButton(
-            onClick = onSettingsClick,
+        // Left: QR Code + Invite Button
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .size(44.dp)
-                .background(CardBackground, CircleShape)
+                .clip(RoundedCornerShape(28.dp))
+                .background(CardBackground)
+                .clickable { /* TODO: Invite logic */ }
+                .padding(horizontal = 16.dp, vertical = 10.dp)
         ) {
             Icon(
-                imageVector = Icons.Rounded.Settings,
-                contentDescription = "Settings",
-                tint = TextPrimary
+                imageVector = Icons.Rounded.QrCode2,
+                contentDescription = "QR Code",
+                tint = AccentPink,
+                modifier = Modifier.size(24.dp)
             )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "Пригласить",
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = TextPrimary
+            )
+        }
+
+        // Right: Notifications + Settings
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            IconButton(
+                onClick = { /* TODO: Notifications logic */ },
+                modifier = Modifier
+                    .size(44.dp)
+                    .background(CardBackground, CircleShape)
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Notifications,
+                    contentDescription = "Notifications",
+                    tint = TextPrimary
+                )
+            }
+
+            IconButton(
+                onClick = onSettingsClick,
+                modifier = Modifier
+                    .size(44.dp)
+                    .background(CardBackground, CircleShape)
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Settings,
+                    contentDescription = "Settings",
+                    tint = TextPrimary
+                )
+            }
         }
     }
 }

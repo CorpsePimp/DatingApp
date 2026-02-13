@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
+import com.example.datingapp.presentation.ui.cards.ActivitiesScreen
 import com.example.datingapp.presentation.ui.chat.ChatListScreen
 import com.example.datingapp.presentation.ui.components.BottomNavItem
 import com.example.datingapp.presentation.ui.components.BottomNavigationBar
@@ -113,7 +114,11 @@ fun MainScaffold(
                 }
 
                 composable("cards") {
-                    PlaceholderScreen(title = "Карточки", emoji = "🎴")
+                    ActivitiesScreen(
+                        onCardClick = { cardId -> /* TODO: Navigate to card detail */ },
+                        onVenueClick = { venueId -> /* TODO: Navigate to venue detail */ },
+                        onAdClick = { adId -> /* TODO: Handle ad click */ }
+                    )
                 }
 
                 composable("profile") {

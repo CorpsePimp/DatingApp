@@ -79,15 +79,10 @@ fun ChatListScreen(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(bottom = 100.dp)
         ) {
-            // Header
-            item {
-                ChatHeader()
-            }
-
             // Search Bar
             item {
                 SearchBar(
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp)
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)
                 )
             }
 
@@ -106,7 +101,7 @@ fun ChatListScreen(
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = TextPrimary,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
                 )
             }
 
@@ -121,23 +116,6 @@ fun ChatListScreen(
     }
 }
 
-@Composable
-private fun ChatHeader() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = "Чаты",
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-            color = TextPrimary
-        )
-    }
-}
 
 @Composable
 private fun SearchBar(modifier: Modifier = Modifier) {
@@ -177,19 +155,19 @@ private fun NewMatchesSection(
     onMatchClick: (String) -> Unit
 ) {
     Column(
-        modifier = Modifier.padding(vertical = 8.dp)
+        modifier = Modifier.padding(vertical = 4.dp)
     ) {
         Text(
             text = "Новые пары",
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = TextPrimary,
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)
         )
 
         LazyRow(
             contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(matches) { match ->
                 NewMatchItem(
@@ -270,7 +248,7 @@ private fun ChatItem(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 4.dp)
+            .padding(horizontal = 16.dp, vertical = 3.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(20.dp),
         color = CardBackground,
@@ -279,7 +257,7 @@ private fun ChatItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 12.dp),
+                .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Avatar with online indicator
@@ -289,7 +267,7 @@ private fun ChatItem(
                     contentDescription = chat.name,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .size(60.dp)
+                        .size(56.dp)
                         .clip(CircleShape)
                 )
 
@@ -304,7 +282,7 @@ private fun ChatItem(
                 }
             }
 
-            Spacer(modifier = Modifier.width(14.dp))
+            Spacer(modifier = Modifier.width(12.dp))
 
             // Chat info
             Column(
