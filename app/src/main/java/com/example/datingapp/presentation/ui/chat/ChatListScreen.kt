@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
+import com.example.datingapp.domain.model.ChatContacts
 
 // Data classes
 data class NewMatch(
@@ -357,7 +358,7 @@ private fun ChatItem(
     }
 }
 
-// Dummy data
+// Dummy data - synced with ChatContacts
 private fun getDummyMatches(): List<NewMatch> = listOf(
     NewMatch("1", "Анна", "https://picsum.photos/seed/match1/200/200", true),
     NewMatch("2", "Мария", "https://picsum.photos/seed/match2/200/200", false),
@@ -367,65 +368,25 @@ private fun getDummyMatches(): List<NewMatch> = listOf(
     NewMatch("6", "Алиса", "https://picsum.photos/seed/match6/200/200", false)
 )
 
-private fun getDummyChats(): List<ChatPreview> = listOf(
-    ChatPreview(
-        id = "1",
-        name = "Анастасия",
-        photoUrl = "https://picsum.photos/seed/chat1/200/200",
-        lastMessage = "Привет! Как дела? 😊",
-        timestamp = "2 мин",
-        unreadCount = 3,
-        isVerified = true,
-        isOnline = true
-    ),
-    ChatPreview(
-        id = "2",
-        name = "Виктория",
-        photoUrl = "https://picsum.photos/seed/chat2/200/200",
-        lastMessage = "Давай встретимся завтра?",
-        timestamp = "15 мин",
-        unreadCount = 1,
-        isVerified = false,
-        isOnline = true
-    ),
-    ChatPreview(
-        id = "3",
-        name = "Екатерина",
-        photoUrl = "https://picsum.photos/seed/chat3/200/200",
-        lastMessage = "Отличное фото!",
-        timestamp = "1 час",
-        unreadCount = 0,
-        isVerified = true,
-        isOnline = false
-    ),
-    ChatPreview(
-        id = "4",
-        name = "Полина",
-        photoUrl = "https://picsum.photos/seed/chat4/200/200",
-        lastMessage = "Спасибо за приятный вечер 💕",
-        timestamp = "3 часа",
-        unreadCount = 0,
-        isVerified = false,
-        isOnline = false
-    ),
-    ChatPreview(
-        id = "5",
-        name = "Александра",
-        photoUrl = "https://picsum.photos/seed/chat5/200/200",
-        lastMessage = "Ты где?",
-        timestamp = "Вчера",
-        unreadCount = 5,
-        isVerified = true,
-        isOnline = false
-    ),
-    ChatPreview(
-        id = "6",
-        name = "Кристина",
-        photoUrl = "https://picsum.photos/seed/chat6/200/200",
-        lastMessage = "Хорошо, договорились!",
-        timestamp = "Вчера",
-        unreadCount = 0,
-        isVerified = false,
-        isOnline = false
+private fun getDummyChats(): List<ChatPreview> = ChatContacts.contacts.mapIndexed { index, contact ->
+    val lastMessages = listOf(
+        "Привет! Как дела? 😊",
+        "Давай встретимся завтра?",
+        "Отличное фото!",
+        "Спасибо за приятный вечер 💕",
+        "Ты где?"
     )
-)
+    val timestamps = listOf("2 мин", "15 мин", "1 час", "3 часа", "Вчера")
+    val unreadCounts = listOf(3, 1, 0, 0, 5)
+
+    ChatPreview(
+        id = contact.id,
+        name = contact.name,
+        photoUrl = contact.photoUrl,
+        lastMessage = lastMessages.getOrElse(index) { "Начните общение!" },
+        timestamp = timestamps.getOrElse(index) { "Только что" },
+        unreadCount = unreadCounts.getOrElse(index) { 0 },
+        isVerified = contact.isVerified,
+        isOnline = contact.isOnline
+    )
+}

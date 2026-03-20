@@ -17,3 +17,7 @@ local.properties
 # AI Context (internal use only)
 AI_CONTEXT.md
 
+# Environment variables (API keys)
+.env
+*.env
+

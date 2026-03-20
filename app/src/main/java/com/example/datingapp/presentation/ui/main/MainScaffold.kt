@@ -12,15 +12,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.*
+import androidx.navigation.navArgument
 import com.example.datingapp.presentation.ui.cards.ActivitiesScreen
+import com.example.datingapp.presentation.ui.chat.ChatDetailScreen
 import com.example.datingapp.presentation.ui.chat.ChatListScreen
 import com.example.datingapp.presentation.ui.components.BottomNavItem
 import com.example.datingapp.presentation.ui.components.BottomNavigationBar
 import com.example.datingapp.presentation.ui.main.home.MainScreen
 import com.example.datingapp.presentation.ui.profile.ProfileScreen
+import com.example.datingapp.presentation.ui.profile.wizard.EditProfileWizard
 import com.example.datingapp.presentation.ui.theme.TextSecondary
+import com.example.datingapp.presentation.viewmodel.ChatViewModel
+import com.example.datingapp.presentation.viewmodel.ProfileViewModel
 
 // Light theme colors
 private val BackgroundStart = Color(0xFFFFF5F7)
@@ -33,6 +40,11 @@ fun MainScaffold(
     val bottomNavController = rememberNavController()
     val navBackStackEntry by bottomNavController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+
+    // Shared ViewModel for profile screens
+    val profileViewModel: ProfileViewModel = viewModel()
+    val profileState by profileViewModel.profileState.collectAsState()
+    val showSuccessSnackbar by profileViewModel.showSuccessSnackbar.collectAsState()
 
     val bottomNavItems = listOf(
         BottomNavItem(
@@ -63,22 +75,27 @@ fun MainScaffold(
         )
     )
 
+    // Hide bottom bar on chat detail screen
+    val shouldShowBottomBar = currentRoute?.startsWith("chat_detail") != true
+
     Scaffold(
         containerColor = Color.Transparent,
         bottomBar = {
-            BottomNavigationBar(
-                items = bottomNavItems,
-                currentRoute = currentRoute,
-                onItemClick = { route ->
-                    bottomNavController.navigate(route) {
-                        popUpTo(bottomNavController.graph.startDestinationId) {
-                            saveState = true
+            if (shouldShowBottomBar) {
+                BottomNavigationBar(
+                    items = bottomNavItems,
+                    currentRoute = currentRoute,
+                    onItemClick = { route ->
+                        bottomNavController.navigate(route) {
+                            popUpTo(bottomNavController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
-                }
-            )
+                )
+            }
         }
     ) { paddingValues ->
         Box(
@@ -104,8 +121,32 @@ fun MainScaffold(
 
                 composable("chat") {
                     ChatListScreen(
-                        onChatClick = { chatId -> /* TODO: Navigate to chat detail */ },
-                        onMatchClick = { matchId -> /* TODO: Navigate to match profile */ }
+                        onChatClick = { chatId ->
+                            bottomNavController.navigate("chat_detail/$chatId")
+                        },
+                        onMatchClick = { matchId ->
+                            bottomNavController.navigate("chat_detail/$matchId")
+                        }
+                    )
+                }
+
+                composable(
+                    route = "chat_detail/{userId}",
+                    arguments = listOf(navArgument("userId") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    val userId = backStackEntry.arguments?.getString("userId") ?: return@composable
+                    val chatViewModel: ChatViewModel = viewModel()
+                    val chatUiState by chatViewModel.uiState.collectAsState()
+
+                    LaunchedEffect(userId) {
+                        chatViewModel.initChat(userId)
+                    }
+
+                    ChatDetailScreen(
+                        uiState = chatUiState,
+                        onInputChange = { chatViewModel.updateInputText(it) },
+                        onSendClick = { chatViewModel.sendMessage() },
+                        onBackClick = { bottomNavController.popBackStack() }
                     )
                 }
 
@@ -123,8 +164,40 @@ fun MainScaffold(
 
                 composable("profile") {
                     ProfileScreen(
-                        onEditProfile = { /* TODO: Navigate to edit profile */ },
+                        profile = profileState,
+                        showSuccessSnackbar = showSuccessSnackbar,
+                        onSnackbarDismissed = { profileViewModel.clearSuccessSnackbar() },
+                        onEditProfile = {
+                            profileViewModel.initWizard()
+                            bottomNavController.navigate("edit_profile")
+                        },
                         onSettingsClick = { /* TODO: Navigate to settings */ }
+                    )
+                }
+
+                composable("edit_profile") {
+                    val wizardState by profileViewModel.wizardState.collectAsState()
+
+                    EditProfileWizard(
+                        state = wizardState,
+                        onNameChange = { profileViewModel.updateName(it) },
+                        onCityChange = { profileViewModel.updateCity(it) },
+                        onBioChange = { profileViewModel.updateBio(it) },
+                        onOccupationChange = { profileViewModel.updateOccupation(it) },
+                        onAddPhoto = { profileViewModel.addPhoto() },
+                        onRemovePhoto = { profileViewModel.removePhoto(it) },
+                        onPreviewIndexChange = { profileViewModel.setPreviewPhotoIndex(it) },
+                        onSearchChange = { profileViewModel.updateInterestSearch(it) },
+                        onToggleInterest = { profileViewModel.toggleInterest(it) },
+                        onNextStep = { profileViewModel.nextStep() },
+                        onPreviousStep = { profileViewModel.previousStep() },
+                        onGoToStep1 = { profileViewModel.goToStep1() },
+                        onSave = {
+                            profileViewModel.saveProfile {
+                                bottomNavController.popBackStack()
+                            }
+                        },
+                        onClose = { bottomNavController.popBackStack() }
                     )
                 }
             }

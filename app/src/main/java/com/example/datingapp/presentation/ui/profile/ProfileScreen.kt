@@ -28,6 +28,7 @@ import coil.compose.AsyncImage
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.rounded.*
+import com.example.datingapp.domain.model.UserProfile
 
 
 // Light theme colors
@@ -43,49 +44,79 @@ private val TextSecondary = Color(0xFF757575)
 
 @Composable
 fun ProfileScreen(
+    profile: UserProfile? = null,
+    showSuccessSnackbar: Boolean = false,
+    onSnackbarDismissed: () -> Unit = {},
     onEditProfile: () -> Unit = {},
     onSettingsClick: () -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
+    val snackbarHostState = remember { SnackbarHostState() }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        BackgroundStart,
-                        BackgroundEnd
-                    )
-                )
+    // Show success snackbar when profile is saved
+    LaunchedEffect(showSuccessSnackbar) {
+        if (showSuccessSnackbar) {
+            snackbarHostState.showSnackbar(
+                message = "Профиль успешно сохранён!",
+                duration = SnackbarDuration.Short
             )
-    ) {
-        Column(
+            onSnackbarDismissed()
+        }
+    }
+
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState) { data ->
+                Snackbar(
+                    snackbarData = data,
+                    containerColor = AccentPink,
+                    contentColor = Color.White,
+                    shape = RoundedCornerShape(16.dp)
+                )
+            }
+        },
+        containerColor = Color.Transparent
+    ) { paddingValues ->
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(scrollState)
-                .padding(bottom = 100.dp)
+                .padding(paddingValues)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            BackgroundStart,
+                            BackgroundEnd
+                        )
+                    )
+                )
         ) {
-            // Header with settings
-            ProfileHeader(onSettingsClick = onSettingsClick)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+                    .padding(bottom = 100.dp)
+            ) {
+                // Header with settings
+                ProfileHeader(onSettingsClick = onSettingsClick)
 
-            // Profile Avatar Section
-            ProfileAvatarSection()
+                // Profile Avatar Section
+                ProfileAvatarSection(profile = profile)
 
-            Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-            // Bento Grid
-            BentoGridSection()
+                // Bento Grid
+                BentoGridSection()
 
-            Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-            // Edit Profile Button
-            EditProfileButton(onClick = onEditProfile)
+                // Edit Profile Button
+                EditProfileButton(onClick = onEditProfile)
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            // Stats Section
-            StatsSection()
+                // Stats Section
+                StatsSection()
+            }
         }
     }
 }
@@ -157,8 +188,20 @@ private fun ProfileHeader(onSettingsClick: () -> Unit) {
 }
 
 @Composable
-private fun ProfileAvatarSection() {
-    val profileCompletion = 0.78f
+private fun ProfileAvatarSection(profile: UserProfile? = null) {
+    val profileCompletion = profile?.profileCompletion ?: 0.78f
+    val photoUrl = profile?.photoUrls?.firstOrNull()
+        ?: "https://picsum.photos/seed/profile/400/400"
+    val displayName = if (profile != null && profile.name.isNotBlank()) {
+        profile.name
+    } else {
+        "Александр"
+    }
+    val displayCity = if (profile != null && profile.city.isNotBlank()) {
+        profile.city
+    } else {
+        "Москва, Россия"
+    }
 
     Column(
         modifier = Modifier
@@ -179,7 +222,7 @@ private fun ProfileAvatarSection() {
 
             // Avatar
             AsyncImage(
-                model = "https://picsum.photos/seed/profile/400/400",
+                model = photoUrl,
                 contentDescription = "Profile photo",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -210,7 +253,7 @@ private fun ProfileAvatarSection() {
 
         // Name
         Text(
-            text = "Александр, 25",
+            text = "$displayName, 25",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             color = TextPrimary
@@ -230,7 +273,7 @@ private fun ProfileAvatarSection() {
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = "Москва, Россия",
+                text = displayCity,
                 style = MaterialTheme.typography.bodyMedium,
                 color = TextSecondary
             )

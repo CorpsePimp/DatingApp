@@ -1,6 +1,6 @@
 # 🤖 AI Context: Dating App Project
 
-**Дата последнего обновления**: 2026-02-06  
+**Дата последнего обновления**: 2026-02-14  
 **Цель файла**: Быстрое восстановление контекста для AI без траты токенов на исследование кодовой базы
 
 ---
@@ -11,18 +11,23 @@
 Android Dating App (аналог Tinder) на Kotlin + Jetpack Compose
 
 ### Текущий статус
-- ✅ Архитектура MVVM создана (пустые директории)
+- ✅ Архитектура MVVM создана
 - ✅ Экраны авторизации (Login, Register) — готовы
 - ✅ Главный экран со свайпами карточек — готов
 - ✅ Интеграция Coil для загрузки изображений — работает
 - ✅ Нижняя навигация (5 кнопок) — реализована
-- ⏳ Экраны: Чаты, Лайки, Карточки, Профиль — заглушки
+- ✅ Экраны Чаты и Профиль — полностью реализованы
+- ✅ Экран Карточки (Activities) — Bento Grid + рекламные блоки
+- ✅ **Система чатов с AI** — OpenRouter API интеграция
+- ✅ **Редактирование профиля** — 4-шаговый Wizard
+- ⏳ Экран: Лайки — заглушка
 
 ### Дизайн-система
-- **Стиль**: Modern Glassmorphism / Soft UI
-- **Цвета**: Soft Pink (#FFE5EC) → Light Violet (#E5D9F2) → Deep Pink (#E91E63)
+- **Стиль**: Modern Glassmorphism / Soft UI (светлая тема)
+- **Цвета**: Light Pink (#FFF5F7) → Light Violet (#F5F0FF) → Accent Pink (#E91E63)
 - **Скругления**: 24-32dp для карточек, 16dp для кнопок
 - **Типографика**: Material 3
+- **Иконки**: Material Icons Extended
 
 ---
 
@@ -31,368 +36,218 @@ Android Dating App (аналог Tinder) на Kotlin + Jetpack Compose
 ```
 app/src/main/java/com/example/datingapp/
 ├── data/
-│   ├── local/          # (пусто)
-│   ├── remote/         # (пусто)
-│   └── repository/     # (пусто)
+│   ├── local/              # (пусто)
+│   ├── remote/
+│   │   └── OpenRouterApiService.kt  # ✅ AI Chat API (Ktor + OkHttp)
+│   └── repository/
+│       ├── ProfileRepository.kt     # ✅ Singleton StateFlow<UserProfile>
+│       └── ChatRepository.kt        # ✅ Session-based chat history
 │
 ├── domain/
 │   ├── model/
-│   │   └── User.kt     # ✅ Модель пользователя + getDummyUsers()
-│   ├── repository/     # (пусто)
-│   └── usecase/        # (пусто)
+│   │   ├── User.kt                  # ✅ Модель + getDummyUsers()
+│   │   ├── UserProfile.kt           # ✅ Профиль + 50+ AvailableInterests
+│   │   └── ChatMessage.kt           # ✅ Модель сообщения + ChatContacts
+│   └── ...
 │
 └── presentation/
     ├── navigation/
-    │   └── NavGraph.kt             # ✅ Главная навигация
+    │   └── NavGraph.kt              # ✅ Главная навигация (login/register/main)
     │
     ├── ui/
     │   ├── auth/
-    │   │   ├── login/
-    │   │   │   └── LoginScreen.kt      # ✅ Email/Password + VK/Mail.ru
-    │   │   └── register/
-    │   │       └── RegisterScreen.kt   # ✅ Email/Password + социальные кнопки
+    │   │   ├── login/LoginScreen.kt
+    │   │   └── register/RegisterScreen.kt
+    │   │
+    │   ├── cards/
+    │   │   ├── ActivitiesScreen.kt      # ✅ Bento Grid + рекламные блоки
+    │   │   └── AdBannerComponent.kt
+    │   │
+    │   ├── chat/
+    │   │   ├── ChatListScreen.kt        # ✅ Список чатов + новые пары
+    │   │   └── ChatDetailScreen.kt      # ✅ Экран чата с AI
     │   │
     │   ├── components/
-    │   │   └── BottomNavigationBar.kt  # ✅ Нижняя панель (5 кнопок)
+    │   │   └── BottomNavigationBar.kt   # ✅ 5 кнопок
     │   │
     │   ├── main/
-    │   │   ├── MainScaffold.kt         # ✅ Обертка с bottom nav
+    │   │   ├── MainScaffold.kt          # ✅ Bottom nav + роутинг
     │   │   └── home/
-    │   │       ├── MainScreen.kt       # ✅ Свайп-экран
-    │   │       └── SwipeableCard.kt    # ✅ Карточка с фото, свайпом, анимациями
+    │   │       ├── MainScreen.kt        # ✅ Свайп-экран
+    │   │       └── SwipeableCard.kt     # ✅ Карточка с анимациями
+    │   │
+    │   ├── profile/
+    │   │   ├── ProfileScreen.kt         # ✅ Профиль + Bento Grid
+    │   │   └── wizard/                  # ✅ 4-шаговый Wizard редактирования
+    │   │       ├── EditProfileWizard.kt
+    │   │       └── StepComponents.kt
     │   │
     │   └── theme/
-    │       └── Theme.kt                 # ✅ Material 3 + кастомные цвета
+    │       └── Theme.kt
     │
-    └── viewmodel/       # (пусто)
+    └── viewmodel/
+        ├── ProfileViewModel.kt          # ✅ Wizard state + DraftProfile
+        └── ChatViewModel.kt             # ✅ Chat logic + AI integration
 ```
 
 ---
 
-## 🎨 ДИЗАЙН-СИСТЕМА (Theme.kt)
+## 🆕 НОВЫЕ КОМПОНЕНТЫ (с последнего обновления)
 
-### Цвета
+### 1. Система редактирования профиля (4-шаговый Wizard)
+
+**Файлы:**
+- `presentation/viewmodel/ProfileViewModel.kt` — WizardStep enum, DraftProfile state
+- `presentation/ui/profile/wizard/EditProfileWizard.kt` — главный контейнер
+- `presentation/ui/profile/wizard/StepComponents.kt` — UI для каждого шага
+
+**Шаги Wizard:**
+1. **BASIC_INFO** — Name*, City*, Bio*, Occupation (валидация: все required не пустые)
+2. **PHOTOS** — 2x3 grid + HorizontalPager preview (валидация: >= 1 фото)
+3. **INTERESTS** — 50+ интересов, поиск, FlowRow (валидация: >= 1 выбран)
+4. **PREVIEW** — Tinder-style карточка + кнопки "Изменить" / "Сохранить"
+
+**Ключевые классы:**
 ```kotlin
-val SoftPink = Color(0xFFFFE5EC)
-val LightViolet = Color(0xFFE5D9F2)
-val DeepPink = Color(0xFFE91E63)
-val BackgroundStart = Color(0xFFFFF5F7)
-val BackgroundEnd = Color(0xFFF3E5F5)
-val TextPrimary = Color(0xFF2C2C2C)
-val TextSecondary = Color(0xFF7F7F7F)
-val ErrorRed = Color(0xFFFF6B6B)
-val SuccessGreen = Color(0xFF4CAF50)
-val VKBlue = Color(0xFF0077FF)
-val MailRuBlue = Color(0xFF168DE2)
-```
+enum class WizardStep { BASIC_INFO, PHOTOS, INTERESTS, PREVIEW }
 
-### Скругления
-- Карточки: `RoundedCornerShape(32.dp)`
-- Кнопки: `RoundedCornerShape(16.dp)`
-- Bottom Nav: `RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)`
+data class DraftProfile(
+    val name: String, val city: String, val bio: String,
+    val occupation: String, val photoUrls: List<String>,
+    val selectedInterests: List<String>
+) {
+    val isStep1Valid: Boolean  // name, city, bio не пустые
+    val isStep2Valid: Boolean  // photoUrls.isNotEmpty()
+    val isStep3Valid: Boolean  // selectedInterests.isNotEmpty()
+}
+
+data class EditProfileWizardState(
+    val currentStep: WizardStep,
+    val draft: DraftProfile,
+    val interestSearchQuery: String,
+    val isSaving: Boolean,
+    val previewPhotoIndex: Int
+)
+```
 
 ---
 
-## 📱 НАВИГАЦИОННАЯ СТРУКТУРА
+### 2. Система чатов с AI (OpenRouter API)
 
-### Главный NavGraph (AppNavGraph)
+**Файлы:**
+- `data/remote/OpenRouterApiService.kt` — Ktor client + fallback models
+- `data/repository/ChatRepository.kt` — session storage (Map<userId, List<Message>>)
+- `domain/model/ChatMessage.kt` — модели + 5 предустановленных ChatContacts
+- `presentation/viewmodel/ChatViewModel.kt` — UI state + API calls
+- `presentation/ui/chat/ChatDetailScreen.kt` — UI чата
+
+**Особенности:**
+- Bottom nav скрывается при открытии чата (`chat_detail/{userId}`)
+- Аватар в TopBar справа, кнопка "назад" слева
+- Typing indicator с анимацией точек
+- Fallback ответы если API недоступен
+- SSL проверка отключена (для dev эмулятора с неправильной датой)
+
+**API конфигурация:**
 ```kotlin
-sealed class Screen(val route: String) {
-    object Login : Screen("login")
-    object Register : Screen("register")
-    object Main : Screen("main")
-    object Likes : Screen("likes")      // WARNING: не используется (в MainScaffold)
-    object Cards : Screen("cards")      // WARNING: не используется (в MainScaffold)
-    object Profile : Screen("profile")  // WARNING: не используется (в MainScaffold)
-    object Chat : Screen("chat")        // WARNING: не используется (в MainScaffold)
+object OpenRouterApiService {
+    private const val API_KEY = "sk-or-v1-..."  // В коде напрямую
+    private const val BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
+    
+    // Fallback модели (пробует по очереди):
+    private val FREE_MODELS = listOf(
+        "mistralai/mistral-7b-instruct:free",
+        "openchat/openchat-7b:free",
+        "huggingfaceh4/zephyr-7b-beta:free",
+        "nousresearch/nous-capybara-7b:free"
+    )
 }
 ```
 
-### Роуты:
-1. `/login` → `LoginScreen`
-2. `/register` → `RegisterScreen`
-3. `/main` → `MainScaffold` (содержит внутреннюю навигацию)
-
-### Внутренняя навигация MainScaffold (Bottom Nav)
-```kotlin
-Роуты (строки, НЕ Screen objects):
-- "chat"    → PlaceholderScreen("Чаты", "💬")
-- "likes"   → PlaceholderScreen("Лайки", "❤️")
-- "main"    → MainScreen (свайпы карточек) ← СТАРТОВЫЙ
-- "cards"   → PlaceholderScreen("Карточки", "🎴")
-- "profile" → PlaceholderScreen("Профиль", "👤")
-```
+**⚠️ Проблема:** API возвращает 404 на бесплатные модели. Пока используются fallback ответы.
 
 ---
 
-## 🔑 КЛЮЧЕВЫЕ КОМПОНЕНТЫ
-
-### 1. User.kt (domain/model/)
-```kotlin
-data class User(
-    val id: String,
-    val name: String,
-    val age: Int,
-    val bio: String,
-    val photoUrl: String? = null,      // ✅ Picsum URLs добавлены
-    val distance: Int? = null,
-    val interests: List<String> = emptyList()
-)
-
-fun getDummyUsers(): List<User>  // 10 тестовых пользователей с фото
-```
-
-**Источник изображений**: `https://picsum.photos/seed/user{1-10}/400/600`
-
----
-
-### 2. SwipeableCard.kt
-**Ключевая логика свайпов**:
+### 3. ChatContacts (предустановленные персонажи)
 
 ```kotlin
-// Используется Animatable для плавного возврата
-val animatedOffsetX = remember { Animatable(0f) }
-val animatedOffsetY = remember { Animatable(0f) }
-
-// Порог свайпа: 300f
-onDragEnd = {
-    when {
-        offsetX > 300f -> onSwipeRight()  // LIKE
-        offsetX < -300f -> onSwipeLeft()  // DISLIKE
-        else -> {
-            // Возврат в центр с spring анимацией
-            coroutineScope.launch {
-                animatedOffsetX.animateTo(0f, spring(...))
-                animatedOffsetY.animateTo(0f, spring(...))
-            }
-        }
-    }
+object ChatContacts {
+    val contacts = listOf(
+        ChatContact(id="1", name="Анастасия", systemPrompt="Привет! Я увидела..."),
+        ChatContact(id="2", name="Виктория", ...),
+        ChatContact(id="3", name="Екатерина", ...),
+        ChatContact(id="4", name="Полина", ...),
+        ChatContact(id="5", name="Александра", ...)
+    )
 }
 ```
 
-**Загрузка изображений (Coil)**:
+---
+
+## 📱 НАВИГАЦИЯ
+
+### Внутренняя навигация MainScaffold
 ```kotlin
-SubcomposeAsyncImage(
-    model = user.photoUrl,
-    contentScale = ContentScale.Crop,
-    loading = { CircularProgressIndicator + gradient },
-    error = { Icon(Person) + gradient }
-)
+"chat"              → ChatListScreen
+"chat_detail/{id}"  → ChatDetailScreen (bottom nav скрыт!)
+"likes"             → PlaceholderScreen
+"main"              → MainScreen (стартовый)
+"cards"             → ActivitiesScreen
+"profile"           → ProfileScreen
+"edit_profile"      → EditProfileWizard
 ```
 
 ---
 
-### 3. BottomNavigationBar.kt
-**Структура**:
+## 🔧 ЗАВИСИМОСТИ
+
 ```kotlin
-data class BottomNavItem(
-    val route: String,
-    val icon: ImageVector,
-    val label: String,
-    val iconSize: Dp = 24.dp
-)
+// Ktor для API
+implementation("io.ktor:ktor-client-core:2.3.7")
+implementation("io.ktor:ktor-client-okhttp:2.3.7")
+implementation("io.ktor:ktor-client-content-negotiation:2.3.7")
+implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.7")
 
-// 5 кнопок (слева направо):
-1. MailOutline (Чаты)
-2. Favorite (Лайки)
-3. FavoriteBorder 32dp (Метч) ← ЦЕНТРАЛЬНАЯ, УВЕЛИЧЕННАЯ
-4. Star (Карточки)
-5. Person (Профиль)
+// Serialization
+implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+kotlin("plugin.serialization") version "2.0.21"
+
+// Coil для изображений
+implementation(libs.coil.compose)
+
+// Material Icons Extended
+implementation(libs.compose.material.icons.extended)
 ```
-
-**Визуальное состояние**:
-- Активная: `DeepPink.copy(alpha = 0.15f)` фон, `DeepPink` иконка
-- Неактивная: прозрачный фон, `TextSecondary` иконка
-
----
-
-### 4. MainScreen.kt (home/)
-**Изменения**:
-- ❌ Убран `TopAppBar` (навигация теперь внизу)
-- ✅ Карточки занимают весь экран
-- ✅ Padding: `horizontal = 16.dp, vertical = 16.dp`
-
-**Логика стека карточек**:
-```kotlin
-var currentIndex by remember { mutableIntStateOf(0) }
-val users = remember { getDummyUsers().toMutableStateList() }
-
-// Показываются 3 карточки для эффекта глубины:
-- currentIndex + 2 (scale 0.9f, offset 16.dp)
-- currentIndex + 1 (scale 0.95f, offset 8.dp)
-- currentIndex (scale 1f, интерактивная)
-```
-
-**Кнопки действий под карточкой**:
-```kotlin
-ActionButtonsRow(
-    onDislike = { currentIndex++ },
-    onSuperLike = { /* TODO */ },
-    onLike = { currentIndex++ }
-)
-```
-
----
-
-### 5. LoginScreen.kt & RegisterScreen.kt
-**Общие элементы**:
-- Email/Password поля с валидацией
-- Социальные кнопки: VK (#0077FF), Mail.ru (#168DE2)
-- Glassmorphism стиль (градиенты + blur эффект)
-- Анимации входа: `AnimatedVisibility` + `slideInVertically`
-
-**Навигация**:
-- Login → Register: `navController.navigate(Screen.Register.route)`
-- Login/Register → Main: успешная авторизация
-
----
-
-## 🔧 ЗАВИСИМОСТИ (build.gradle.kts)
-
-### Текущие библиотеки:
-```kotlin
-// Core
-implementation(libs.androidx.core.ktx)
-implementation(libs.androidx.lifecycle.runtime.ktx)
-implementation(libs.androidx.activity.compose)
-
-// Compose
-implementation(platform(libs.androidx.compose.bom))
-implementation(libs.androidx.compose.ui)
-implementation(libs.androidx.compose.ui.graphics)
-implementation(libs.androidx.compose.ui.tooling.preview)
-implementation(libs.androidx.compose.material3)
-
-// Navigation
-implementation(libs.androidxNavigationCompose)  // 2.9.7
-
-// Image Loading
-implementation(libs.coil.compose)  // 2.6.0
-```
-
-### libs.versions.toml:
-```toml
-[versions]
-navigationCompose = "2.9.7"
-coil = "2.6.0"
-# ... другие версии
-```
-
----
-
-## ⚠️ ВАЖНЫЕ ДЕТАЛИ
-
-### AndroidManifest.xml
-```xml
-<uses-permission android:name="android.permission.INTERNET" />
-```
-**КРИТИЧНО**: без этого Coil не загружает изображения → crash
-
-### Известные Warnings (не критичны):
-1. `navController` в MainScaffold не используется (зарезервирован для будущего)
-2. `onNavigateToProfile/Chat` в MainScreen не используются (навигация через bottom bar)
-3. `Screen.Likes`, `Screen.Cards` не используются (внутри MainScaffold строковые роуты)
-4. `isPressed = false` в ActionButton — LaunchedEffect сбрасывает
-
----
-
-## 🎯 ЧТО ГОТОВО
-
-### ✅ Полностью реализовано:
-1. **Архитектура MVVM** (структура папок)
-2. **Экраны авторизации** (Login, Register) с дизайном
-3. **Главный экран свайпов** с карточками
-4. **Загрузка изображений** через Coil (Picsum API)
-5. **Нижняя навигация** (5 кнопок)
-6. **Анимации**:
-   - Плавный возврат карточки в центр
-   - Индикаторы LIKE/NOPE при свайпе
-   - Переходы между экранами
-
-### ⏳ Заглушки (PlaceholderScreen):
-- Чаты (💬)
-- Лайки (❤️)
-- Карточки (🎴)
-- Профиль (👤)
-
----
-
-## 🚀 СЛЕДУЮЩИЕ ШАГИ (для разработки)
-
-### Приоритет 1: Основные экраны
-1. **Экран профиля** (Profile)
-   - Фото, имя, возраст, био
-   - Редактирование данных
-   - Настройки
-
-2. **Экран лайков** (Likes)
-   - Список людей, лайкнувших вас
-   - Grid/List view карточек
-
-3. **Экран чатов** (Chat)
-   - Список мэтчей
-   - Превью последних сообщений
-
-### Приоритет 2: Функционал
-- Реальный backend (Firebase/REST API)
-- Настройки фильтров (возраст, расстояние)
-- Push-уведомления
-- Чат (сообщения в реальном времени)
-
-### Приоритет 3: Улучшения
-- Shimmer-эффект вместо CircularProgressIndicator
-- Более реалистичные изображения (Unsplash API)
-- Геолокация
-- Верификация профиля
-
----
-
-## 🐛 ИЗВЕСТНЫЕ ПРОБЛЕМЫ
-
-### Решено:
-- ✅ Crash при загрузке изображений → добавлен INTERNET permission
-- ✅ Карточка не возвращалась в центр → использован Animatable вместо animateFloatAsState
-- ✅ TopAppBar занимал место → удален, навигация перенесена вниз
-
-### Текущие:
-- Нет реальных данных (все mock)
-- Placeholder экраны не реализованы
-- Нет персистентности данных
-
----
-
-## 💡 СОВЕТЫ ДЛЯ AI
-
-### При добавлении новых экранов:
-1. Создавай в `presentation/ui/{секция}/{экран}/`
-2. Добавляй роут в `MainScaffold.kt` (строковый, не Screen object)
-3. Обновляй `BottomNavItem` если нужна новая кнопка
-4. Следуй дизайн-системе (Theme.kt цвета + скругления)
-
-### При работе с навигацией:
-- **Внешняя** (Login → Main): используй `Screen` sealed class
-- **Внутренняя** (Bottom Nav): используй строковые роуты ("chat", "main", etc.)
-- Не забывай `popUpTo` + `saveState` для bottom nav
-
-### При работе с Compose:
-- Всегда используй `remember` для состояний
-- Для анимаций: `Animatable` > `animateFloatAsState` (больше контроля)
-- Для списков: `LazyColumn` с `items()`, не `forEach`
-
-### Стиль кода:
-- Kotlin конвенции (camelCase, 4 пробела)
-- `@Composable` функции с PascalCase
-- Комментарии на русском (как в текущем коде)
 
 ---
 
 ## 📊 МЕТРИКИ ПРОЕКТА
 
-- **Всего файлов Kotlin**: ~12
-- **Строк кода**: ~2000+
-- **Экранов**: 7 (3 готовых, 4 заглушки)
-- **Компонентов**: 6 (LoginScreen, RegisterScreen, MainScreen, SwipeableCard, BottomNavigationBar, PlaceholderScreen)
+- **Всего файлов Kotlin**: ~20
+- **Экранов**: 9 (8 готовых, 1 заглушка - Лайки)
+- **Компонентов**:
+  - Auth: LoginScreen, RegisterScreen
+  - Main: MainScreen, SwipeableCard
+  - Chat: ChatListScreen, ChatDetailScreen
+  - Profile: ProfileScreen, EditProfileWizard, StepComponents
+  - Cards: ActivitiesScreen, AdBannerComponent
+  - Data: OpenRouterApiService, ChatRepository, ProfileRepository
+  - ViewModels: ProfileViewModel, ChatViewModel
 
 ---
 
-**Конец контекста. При необходимости обновлять этот файл после значительных изменений.**
+## ⚠️ ИЗВЕСТНЫЕ ПРОБЛЕМЫ
+
+1. **OpenRouter API 404** — бесплатные модели недоступны, используется fallback
+2. **SSL на эмуляторе** — отключена проверка сертификатов из-за неверной даты
+3. **Свайп на эмуляторе** — карточка не всегда возвращается (работает на реальном устройстве)
+
+---
+
+## 🎯 СЛЕДУЮЩИЕ ШАГИ
+
+1. Починить OpenRouter API или найти альтернативу
+2. Реализовать экран "Лайки"
+3. Добавить экран настроек
+4. Добавить темную тему
+5. Реализовать реальную авторизацию
