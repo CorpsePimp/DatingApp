@@ -18,6 +18,7 @@ sealed class Screen(val route: String) {
     object Cards : Screen("cards")
     object Profile : Screen("profile")
     object Chat : Screen("chat")
+    object Settings : Screen("settings")
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -100,6 +101,27 @@ fun AppNavGraph(
             }
         ) {
             MainScaffold(navController = navController)
+        }
+
+        // Settings Screen
+        composable(
+            route = Screen.Settings.route,
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { it },
+                    animationSpec = tween(500, easing = FastOutSlowInEasing)
+                ) + fadeIn(animationSpec = tween(500))
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { it },
+                    animationSpec = tween(500, easing = FastOutSlowInEasing)
+                ) + fadeOut(animationSpec = tween(500))
+            }
+        ) {
+            com.example.datingapp.presentation.ui.settings.SettingsScreen(
+                onBack = { navController.popBackStack() }
+            )
         }
     }
 }

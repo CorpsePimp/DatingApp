@@ -902,7 +902,7 @@ fun WizardNextButton(
                 .height(56.dp),
             shape = RoundedCornerShape(28.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = AccentPink
+                containerColor = MaterialTheme.colorScheme.primary
             )
         ) {
             Text(

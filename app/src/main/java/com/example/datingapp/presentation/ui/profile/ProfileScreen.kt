@@ -150,7 +150,7 @@ private fun ProfileHeader(onSettingsClick: () -> Unit) {
                 text = "Пригласить",
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = TextPrimary
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
 
@@ -162,12 +162,12 @@ private fun ProfileHeader(onSettingsClick: () -> Unit) {
                 onClick = { /* TODO: Notifications logic */ },
                 modifier = Modifier
                     .size(44.dp)
-                    .background(CardBackground, CircleShape)
+                    .background(MaterialTheme.colorScheme.surface, CircleShape)
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Notifications,
                     contentDescription = "Notifications",
-                    tint = TextPrimary
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
 
@@ -175,12 +175,12 @@ private fun ProfileHeader(onSettingsClick: () -> Unit) {
                 onClick = onSettingsClick,
                 modifier = Modifier
                     .size(44.dp)
-                    .background(CardBackground, CircleShape)
+                    .background(MaterialTheme.colorScheme.surface, CircleShape)
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Settings,
                     contentDescription = "Settings",
-                    tint = TextPrimary
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
@@ -540,11 +540,11 @@ private fun EditProfileButton(onClick: () -> Unit) {
             border = androidx.compose.foundation.BorderStroke(
                 2.dp,
                 Brush.linearGradient(
-                    colors = listOf(AccentPink, AccentViolet)
+                    colors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)
                 )
             ),
             colors = ButtonDefaults.outlinedButtonColors(
-                contentColor = TextPrimary
+                contentColor = MaterialTheme.colorScheme.onBackground
             )
         ) {
             Icon(
@@ -573,14 +573,14 @@ private fun StatsSection() {
             text = "Статистика",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
-            color = TextPrimary,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(24.dp),
-            color = CardBackground,
+            color = MaterialTheme.colorScheme.surface,
             shadowElevation = 2.dp
         ) {
             Row(
@@ -608,13 +608,13 @@ private fun StatItem(value: String, label: String) {
             text = value,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
-            color = AccentPink
+            color = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
-            color = TextSecondary
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
@@ -625,6 +625,6 @@ private fun StatDivider() {
         modifier = Modifier
             .width(1.dp)
             .height(40.dp)
-            .background(TextSecondary.copy(alpha = 0.3f))
+            .background(MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f))
     )
 }

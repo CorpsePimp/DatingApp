@@ -39,7 +39,7 @@ fun PlaceholderScreen(
                         Icon(
                             imageVector = Icons.Rounded.ArrowBack,
                             contentDescription = "Back",
-                            tint = DeepPink
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                 },
@@ -66,7 +66,7 @@ fun PlaceholderScreen(
                     text = title,
                     style = MaterialTheme.typography.headlineLarge,
                     fontWeight = FontWeight.Bold,
-                    color = TextPrimary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -74,7 +74,7 @@ fun PlaceholderScreen(
                 Text(
                     text = "Этот экран скоро будет готов!",
                     style = MaterialTheme.typography.bodyLarge,
-                    color = TextSecondary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DatingApp</string>
+    <string name="settings_title">Настройки</string>
+    <string name="theme_title">Темная тема</string>
+    <string name="language_title">Язык</string>
+    <string name="language_ru">Русский</string>
+    <string name="language_en">Английский</string>
+</resources>

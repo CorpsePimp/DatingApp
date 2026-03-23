@@ -199,7 +199,7 @@ fun VenueCard(
                 onClick = onClick
             ),
         shape = shape,
-        color = CardBackground,
+        color = MaterialTheme.colorScheme.surface,
         shadowElevation = 4.dp
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -216,15 +216,15 @@ fun VenueCard(
                             .background(
                                 brush = Brush.verticalGradient(
                                     colors = listOf(
-                                        AccentPink.copy(alpha = 0.1f),
-                                        AccentViolet.copy(alpha = 0.1f)
+                                        MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                                        MaterialTheme.colorScheme.secondary.copy(alpha = 0.1f)
                                     )
                                 )
                             ),
                         contentAlignment = Alignment.Center
                     ) {
                         CircularProgressIndicator(
-                            color = AccentPink,
+                            color = MaterialTheme.colorScheme.primary,
                             strokeWidth = 2.dp,
                             modifier = Modifier.size(24.dp)
                         )
@@ -237,8 +237,8 @@ fun VenueCard(
                             .background(
                                 brush = Brush.verticalGradient(
                                     colors = listOf(
-                                        AccentPink.copy(alpha = 0.2f),
-                                        AccentViolet.copy(alpha = 0.2f)
+                                        MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
+                                        MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f)
                                     )
                                 )
                             ),
@@ -247,7 +247,7 @@ fun VenueCard(
                         Icon(
                             imageVector = Icons.Rounded.Restaurant,
                             contentDescription = null,
-                            tint = AccentPink,
+                            tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(48.dp)
                         )
                     }
@@ -302,7 +302,7 @@ fun VenueCard(
                             text = String.format("%.1f", rating),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
-                            color = TextPrimary
+                            color = Color.Black
                         )
                     }
                 }

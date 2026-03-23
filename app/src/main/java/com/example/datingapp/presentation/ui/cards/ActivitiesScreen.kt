@@ -26,16 +26,9 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.rounded.*
 
 // Design system colors
-private val BackgroundStart = Color(0xFFFFF5F7)
-private val BackgroundEnd = Color(0xFFF5F0FF)
-private val CardBackground = Color(0xFFFFFFFF)
-private val AccentPink = Color(0xFFE91E63)
-private val AccentViolet = Color(0xFF9C27B0)
 private val AccentOrange = Color(0xFFFF9800)
 private val AccentBlue = Color(0xFF2196F3)
 private val AccentGreen = Color(0xFF4CAF50)
-private val TextPrimary = Color(0xFF2D2D2D)
-private val TextSecondary = Color(0xFF757575)
 
 // Flowwow brand colors
 private val FlowwowPrimary = Color(0xFFFF6B9D)
@@ -79,7 +72,10 @@ fun ActivitiesScreen(
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(BackgroundStart, BackgroundEnd)
+                    colors = listOf(
+                        MaterialTheme.colorScheme.background,
+                        MaterialTheme.colorScheme.secondaryContainer
+                    )
                 )
             )
     ) {
@@ -99,7 +95,7 @@ fun ActivitiesScreen(
                     text = "Активности",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
-                    color = TextPrimary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
 
@@ -109,7 +105,7 @@ fun ActivitiesScreen(
                     title = "Темы для разговора",
                     subtitle = "Не знаешь о чём поговорить? Мы подготовили 100+ интересных тем!",
                     icon = Icons.Rounded.Chat,
-                    gradientColors = listOf(AccentPink, AccentViolet),
+                    gradientColors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.tertiary),
                     onClick = { onCardClick("topics") },
                     modifier = Modifier.fillMaxWidth(),
                     height = 160.dp
@@ -203,19 +199,19 @@ fun ActivitiesScreen(
                         text = "Рядом с вами",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = TextPrimary
+                        color = MaterialTheme.colorScheme.onBackground
                     )
 
                     TextButton(onClick = { onCardClick("all_venues") }) {
                         Text(
                             text = "Все",
-                            color = AccentPink,
+                            color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.SemiBold
                         )
                         Icon(
                             imageVector = Icons.Rounded.ChevronRight,
                             contentDescription = null,
-                            tint = AccentPink,
+                            tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(20.dp)
                         )
                     }
@@ -258,7 +254,7 @@ fun ActivitiesScreen(
                     text = "Игры на совместимость",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
-                    color = TextPrimary,
+                    color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.padding(top = 8.dp)
                 )
             }
@@ -401,6 +397,7 @@ private fun FeatureCard(
     }
 }
 
+
 // Dummy data for activity cards
 private fun getActivityCards(): List<ActivityCard> = listOf(
     ActivityCard(
@@ -408,7 +405,7 @@ private fun getActivityCards(): List<ActivityCard> = listOf(
         title = "Темы для разговора",
         subtitle = "100+ интересных тем для общения",
         icon = Icons.Rounded.Chat,
-        gradientColors = listOf(AccentPink, AccentViolet)
+        gradientColors = listOf(Color(0xFFE91E63), Color(0xFF9C27B0))
     ),
     ActivityCard(
         id = "places",

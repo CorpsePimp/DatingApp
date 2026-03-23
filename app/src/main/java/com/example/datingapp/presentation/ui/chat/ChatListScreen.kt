@@ -252,7 +252,7 @@ private fun ChatItem(
             .padding(horizontal = 16.dp, vertical = 3.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(20.dp),
-        color = CardBackground,
+        color = MaterialTheme.colorScheme.surface,
         shadowElevation = 1.dp
     ) {
         Row(
@@ -278,7 +278,7 @@ private fun ChatItem(
                             .size(14.dp)
                             .align(Alignment.BottomEnd)
                             .background(OnlineGreen, CircleShape)
-                            .border(2.dp, CardBackground, CircleShape)
+                            .border(2.dp, MaterialTheme.colorScheme.surface, CircleShape)
                     )
                 }
             }
@@ -296,7 +296,7 @@ private fun ChatItem(
                         text = chat.name,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
-                        color = TextPrimary
+                        color = MaterialTheme.colorScheme.onBackground
                     )
 
                     if (chat.isVerified) {
@@ -315,7 +315,7 @@ private fun ChatItem(
                 Text(
                     text = chat.lastMessage,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = TextSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -328,7 +328,7 @@ private fun ChatItem(
                 Text(
                     text = chat.timestamp,
                     style = MaterialTheme.typography.bodySmall,
-                    color = TextSecondary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
                 if (chat.unreadCount > 0) {
@@ -338,7 +338,7 @@ private fun ChatItem(
                             .size(22.dp)
                             .background(
                                 brush = Brush.linearGradient(
-                                    colors = listOf(AccentPink, AccentViolet)
+                                    colors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)
                                 ),
                                 shape = CircleShape
                             ),

@@ -173,7 +173,7 @@ private fun WizardTopBar(
                         WizardStep.PREVIEW -> "Шаг 4 из 4"
                     },
                     style = MaterialTheme.typography.titleMedium,
-                    color = TextSecondary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             navigationIcon = {
@@ -182,7 +182,7 @@ private fun WizardTopBar(
                         Icon(
                             imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                             contentDescription = "Back",
-                            tint = TextPrimary
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
@@ -192,7 +192,7 @@ private fun WizardTopBar(
                     Icon(
                         imageVector = Icons.Rounded.Close,
                         contentDescription = "Close",
-                        tint = TextPrimary
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
             },

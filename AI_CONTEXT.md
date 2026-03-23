@@ -20,11 +20,14 @@ Android Dating App (аналог Tinder) на Kotlin + Jetpack Compose
 - ✅ Экран Карточки (Activities) — Bento Grid + рекламные блоки
 - ✅ **Система чатов с AI** — OpenRouter API интеграция
 - ✅ **Редактирование профиля** — 4-шаговый Wizard
+- ✅ **Настройки и Локализация** — Смена языка (RU/EN) и темы
+- ✅ **Темная тема** — Полная поддержка MaterialTheme во всех экранах
 - ⏳ Экран: Лайки — заглушка
 
 ### Дизайн-система
-- **Стиль**: Modern Glassmorphism / Soft UI (светлая тема)
-- **Цвета**: Light Pink (#FFF5F7) → Light Violet (#F5F0FF) → Accent Pink (#E91E63)
+- **Стиль**: Modern Glassmorphism / Soft UI
+- **Темы**: Light (Pink/Violet) & Dark (Deep Grey/Violet)
+- **Цвета**: Dynamic MaterialTheme colors
 - **Скругления**: 24-32dp для карточек, 16dp для кнопок
 - **Типографика**: Material 3
 - **Иконки**: Material Icons Extended
@@ -92,7 +95,7 @@ app/src/main/java/com/example/datingapp/
 
 ---
 
-## 🆕 НОВЫЕ КОМПОНЕНТЫ (с последнего обновления)
+## 🆕 НОВЫЕ КОМПОНЕНТЫ (С ПОСЛЕДНЕГО ОБНОВЛЕНИЯ)
 
 ### 1. Система редактирования профиля (4-шаговый Wizard)
 
@@ -195,6 +198,7 @@ object ChatContacts {
 "cards"             → ActivitiesScreen
 "profile"           → ProfileScreen
 "edit_profile"      → EditProfileWizard
+"settings"          → SettingsScreen
 ```
 
 ---
@@ -248,6 +252,6 @@ implementation(libs.compose.material.icons.extended)
 
 1. Починить OpenRouter API или найти альтернативу
 2. Реализовать экран "Лайки"
-3. Добавить экран настроек
-4. Добавить темную тему
+3. ✅ Добавить экран настроек (Готово)
+4. ✅ Добавить темную тему (Готово)
 5. Реализовать реальную авторизацию

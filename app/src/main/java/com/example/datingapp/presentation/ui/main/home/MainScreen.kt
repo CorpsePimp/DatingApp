@@ -171,7 +171,7 @@ fun NoMoreUsersMessage(
             text = "Вы просмотрели всех!",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
-            color = TextPrimary
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -179,7 +179,7 @@ fun NoMoreUsersMessage(
         Text(
             text = "Скоро появятся новые анкеты",
             style = MaterialTheme.typography.bodyLarge,
-            color = TextSecondary
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -188,7 +188,7 @@ fun NoMoreUsersMessage(
             onClick = onReload,
             shape = MaterialTheme.shapes.large,
             colors = ButtonDefaults.buttonColors(
-                containerColor = DeepPink
+                containerColor = MaterialTheme.colorScheme.primary
             ),
             modifier = Modifier
                 .fillMaxWidth()
@@ -197,7 +197,8 @@ fun NoMoreUsersMessage(
             Text(
                 text = "Посмотреть снова",
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
     }

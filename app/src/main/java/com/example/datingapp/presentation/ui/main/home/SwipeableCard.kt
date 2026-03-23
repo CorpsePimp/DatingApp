@@ -248,7 +248,7 @@ fun SwipeableCard(
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(ErrorRed.copy(alpha = swipeProgress * 0.3f))
+                            .background(MaterialTheme.colorScheme.error.copy(alpha = swipeProgress * 0.3f))
                             .padding(32.dp),
                         contentAlignment = Alignment.TopEnd
                     ) {
@@ -266,7 +266,7 @@ fun SwipeableCard(
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(SuccessGreen.copy(alpha = swipeProgress * 0.3f))
+                            .background(Color(0xFF4CAF50).copy(alpha = swipeProgress * 0.3f))
                             .padding(32.dp),
                         contentAlignment = Alignment.TopStart
                     ) {

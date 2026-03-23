@@ -34,18 +34,10 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-// Design colors
-private val BackgroundStart = Color(0xFFFFF5F7)
-private val BackgroundEnd = Color(0xFFF5F0FF)
-private val CardBackground = Color(0xFFFFFFFF)
-private val AccentPink = Color(0xFFE91E63)
-private val AccentViolet = Color(0xFF9C27B0)
-private val TextPrimary = Color(0xFF2D2D2D)
-private val TextSecondary = Color(0xFF757575)
+// Design colors - removed hardcoded values, use MaterialTheme instead
+// private val BackgroundStart = Color(0xFFFFF5F7)
+// ...
 private val OnlineGreen = Color(0xFF4CAF50)
-private val UserBubbleStart = Color(0xFF9C27B0)
-private val UserBubbleEnd = Color(0xFFE91E63)
-private val AiBubbleColor = Color(0xFFF5F5F5)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,7 +64,10 @@ fun ChatDetailScreen(
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(BackgroundStart, BackgroundEnd)
+                    colors = listOf(
+                        MaterialTheme.colorScheme.background,
+                        MaterialTheme.colorScheme.secondaryContainer
+                    )
                 )
             )
     ) {
@@ -132,7 +127,7 @@ private fun ChatTopBar(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = CardBackground,
+        color = MaterialTheme.colorScheme.surface,
         shadowElevation = 2.dp
     ) {
         Row(
@@ -146,7 +141,7 @@ private fun ChatTopBar(
                 Icon(
                     imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                     contentDescription = "Back",
-                    tint = TextPrimary
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
 
@@ -157,7 +152,7 @@ private fun ChatTopBar(
                         text = name,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = TextPrimary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
 
                     if (isVerified) {
@@ -174,7 +169,7 @@ private fun ChatTopBar(
                 Text(
                     text = if (isOnline) "В сети" else "Был(а) недавно",
                     style = MaterialTheme.typography.bodySmall,
-                    color = if (isOnline) OnlineGreen else TextSecondary
+                    color = if (isOnline) OnlineGreen else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
@@ -195,7 +190,7 @@ private fun ChatTopBar(
                             .size(14.dp)
                             .align(Alignment.BottomEnd)
                             .background(OnlineGreen, CircleShape)
-                            .border(2.dp, CardBackground, CircleShape)
+                            .border(2.dp, MaterialTheme.colorScheme.surface, CircleShape)
                     )
                 }
             }
@@ -225,11 +220,11 @@ private fun MessageBubble(message: ChatMessage) {
         ) {
             Surface(
                 shape = bubbleShape,
-                color = if (isUser) Color.Transparent else AiBubbleColor,
+                color = if (isUser) Color.Transparent else MaterialTheme.colorScheme.surfaceVariant,
                 modifier = if (isUser) {
                     Modifier.background(
                         brush = Brush.linearGradient(
-                            colors = listOf(UserBubbleStart, UserBubbleEnd)
+                            colors = listOf(MaterialTheme.colorScheme.secondary, MaterialTheme.colorScheme.primary)
                         ),
                         shape = bubbleShape
                     )
@@ -238,7 +233,7 @@ private fun MessageBubble(message: ChatMessage) {
                 Text(
                     text = message.content,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = if (isUser) Color.White else TextPrimary,
+                    color = if (isUser) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
                 )
             }
@@ -248,7 +243,7 @@ private fun MessageBubble(message: ChatMessage) {
             Text(
                 text = timeFormat.format(Date(message.timestamp)),
                 style = MaterialTheme.typography.labelSmall,
-                color = TextSecondary
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
@@ -294,7 +289,7 @@ private fun TypingIndicator(name: String) {
     ) {
         Surface(
             shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 4.dp),
-            color = AiBubbleColor
+            color = MaterialTheme.colorScheme.surfaceVariant
         ) {
             Row(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
@@ -304,7 +299,7 @@ private fun TypingIndicator(name: String) {
                 Text(
                     text = "$name печатает",
                     style = MaterialTheme.typography.bodySmall,
-                    color = TextSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.Medium
                 )
 
@@ -314,7 +309,7 @@ private fun TypingIndicator(name: String) {
                     modifier = Modifier
                         .size(6.dp)
                         .background(
-                            AccentPink.copy(alpha = dot1Alpha),
+                            MaterialTheme.colorScheme.primary.copy(alpha = dot1Alpha),
                             CircleShape
                         )
                 )
@@ -322,7 +317,7 @@ private fun TypingIndicator(name: String) {
                     modifier = Modifier
                         .size(6.dp)
                         .background(
-                            AccentPink.copy(alpha = dot2Alpha),
+                            MaterialTheme.colorScheme.primary.copy(alpha = dot2Alpha),
                             CircleShape
                         )
                 )
@@ -330,7 +325,7 @@ private fun TypingIndicator(name: String) {
                     modifier = Modifier
                         .size(6.dp)
                         .background(
-                            AccentPink.copy(alpha = dot3Alpha),
+                            MaterialTheme.colorScheme.primary.copy(alpha = dot3Alpha),
                             CircleShape
                         )
                 )
@@ -348,7 +343,7 @@ private fun ChatInputField(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = CardBackground,
+        color = MaterialTheme.colorScheme.surface,
         shadowElevation = 8.dp
     ) {
         Row(
@@ -365,7 +360,7 @@ private fun ChatInputField(
                 Icon(
                     imageVector = Icons.Rounded.AttachFile,
                     contentDescription = "Attach",
-                    tint = TextSecondary
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
@@ -376,7 +371,7 @@ private fun ChatInputField(
                 placeholder = {
                     Text(
                         "Написать сообщение...",
-                        color = TextSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 },
                 modifier = Modifier
@@ -384,11 +379,11 @@ private fun ChatInputField(
                     .heightIn(min = 48.dp),
                 shape = RoundedCornerShape(24.dp),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = Color(0xFFF5F5F5),
-                    unfocusedContainerColor = Color(0xFFF5F5F5),
-                    focusedBorderColor = AccentPink,
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
                     unfocusedBorderColor = Color.Transparent,
-                    cursorColor = AccentPink
+                    cursorColor = MaterialTheme.colorScheme.primary
                 ),
                 singleLine = false,
                 maxLines = 4
@@ -409,7 +404,7 @@ private fun ChatInputField(
                         .size(48.dp)
                         .background(
                             brush = Brush.linearGradient(
-                                colors = listOf(AccentViolet, AccentPink)
+                                colors = listOf(MaterialTheme.colorScheme.secondary, MaterialTheme.colorScheme.primary)
                             ),
                             shape = CircleShape
                         )
@@ -417,7 +412,7 @@ private fun ChatInputField(
                     Icon(
                         imageVector = Icons.AutoMirrored.Rounded.Send,
                         contentDescription = "Send",
-                        tint = Color.White
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }

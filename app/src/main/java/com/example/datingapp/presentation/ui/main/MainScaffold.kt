@@ -103,7 +103,10 @@ fun MainScaffold(
                 .fillMaxSize()
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(BackgroundStart, BackgroundEnd)
+                        colors = listOf(
+                            MaterialTheme.colorScheme.background,
+                            MaterialTheme.colorScheme.surfaceVariant
+                        )
                     )
                 )
         ) {
@@ -171,7 +174,9 @@ fun MainScaffold(
                             profileViewModel.initWizard()
                             bottomNavController.navigate("edit_profile")
                         },
-                        onSettingsClick = { /* TODO: Navigate to settings */ }
+                        onSettingsClick = {
+                            navController.navigate("settings")
+                        }
                     )
                 }
 
