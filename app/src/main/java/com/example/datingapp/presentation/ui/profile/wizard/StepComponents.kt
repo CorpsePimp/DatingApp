@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 import com.example.datingapp.domain.model.AvailableInterests
+import com.example.datingapp.presentation.ui.theme.LocalIsItMode
 import com.example.datingapp.presentation.viewmodel.DraftProfile
 
 // Design colors
@@ -59,6 +60,7 @@ fun Step1BasicInfo(
     onOccupationChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val isItMode = LocalIsItMode.current
     val scrollState = rememberScrollState()
 
     Column(
@@ -70,14 +72,18 @@ fun Step1BasicInfo(
     ) {
         // Header
         Text(
-            text = "Основная информация",
+            text = if (isItMode) "Профессиональная информация" else "Основная информация",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             color = TextPrimary
         )
 
         Text(
-            text = "Заполните обязательные поля, чтобы продолжить",
+            text = if (isItMode) {
+                "Заполните ключевые поля профиля, чтобы находить IT-единомышленников"
+            } else {
+                "Заполните обязательные поля, чтобы продолжить"
+            },
             style = MaterialTheme.typography.bodyMedium,
             color = TextSecondary
         )
@@ -89,7 +95,7 @@ fun Step1BasicInfo(
             value = draft.name,
             onValueChange = onNameChange,
             label = "Имя *",
-            placeholder = "Как вас зовут?",
+            placeholder = if (isItMode) "Как к вам обращаться?" else "Как вас зовут?",
             leadingIcon = Icons.Rounded.Person,
             isRequired = true
         )
@@ -108,8 +114,8 @@ fun Step1BasicInfo(
         WizardTextField(
             value = draft.bio,
             onValueChange = onBioChange,
-            label = "О себе *",
-            placeholder = "Расскажите о себе...",
+            label = if (isItMode) "О себе и опыте *" else "О себе *",
+            placeholder = if (isItMode) "Опишите опыт, цели и чем можете быть полезны..." else "Расскажите о себе...",
             leadingIcon = Icons.Rounded.Edit,
             isRequired = true,
             singleLine = false,
@@ -120,8 +126,8 @@ fun Step1BasicInfo(
         WizardTextField(
             value = draft.occupation,
             onValueChange = onOccupationChange,
-            label = "Профессия",
-            placeholder = "Чем вы занимаетесь?",
+            label = if (isItMode) "Роль / специализация" else "Профессия",
+            placeholder = if (isItMode) "Например: Android Developer" else "Чем вы занимаетесь?",
             leadingIcon = Icons.Rounded.Work,
             isRequired = false
         )
@@ -195,6 +201,7 @@ fun Step2Photos(
     onPreviewIndexChange: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val isItMode = LocalIsItMode.current
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -428,6 +435,7 @@ fun Step3Interests(
     onToggleInterest: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val isItMode = LocalIsItMode.current
     val filteredInterests = remember(searchQuery) {
         if (searchQuery.isBlank()) {
             AvailableInterests.all
@@ -446,14 +454,18 @@ fun Step3Interests(
     ) {
         // Header
         Text(
-            text = "Интересы",
+            text = if (isItMode) "Стек и интересы" else "Интересы",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             color = TextPrimary
         )
 
         Text(
-            text = "Выберите минимум 1 интерес (выбрано: ${selectedInterests.size})",
+            text = if (isItMode) {
+                "Выберите минимум 1 интерес (стек, технологии, направления): ${selectedInterests.size}"
+            } else {
+                "Выберите минимум 1 интерес (выбрано: ${selectedInterests.size})"
+            },
             style = MaterialTheme.typography.bodyMedium,
             color = TextSecondary
         )
@@ -596,6 +608,7 @@ fun Step4Preview(
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val isItMode = LocalIsItMode.current
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -613,7 +626,7 @@ fun Step4Preview(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Так ваш профиль видят другие:",
+            text = if (isItMode) "Так ваш IT-профиль видят другие:" else "Так ваш профиль видят другие:",
             style = MaterialTheme.typography.bodyMedium,
             color = TextSecondary,
             textAlign = TextAlign.Center

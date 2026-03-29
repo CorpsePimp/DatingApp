@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.datingapp.presentation.viewmodel.EditProfileWizardState
 import com.example.datingapp.presentation.viewmodel.WizardStep
+import com.example.datingapp.presentation.ui.theme.LocalIsItMode
 
 // Design colors
 private val BackgroundStart = Color(0xFFFFF5F7)
@@ -46,6 +47,7 @@ fun EditProfileWizard(
     onSave: () -> Unit,
     onClose: () -> Unit
 ) {
+    val isItMode = LocalIsItMode.current
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -74,6 +76,7 @@ fun EditProfileWizard(
                 currentStep = state.currentStep,
                 progress = state.progress,
                 canGoBack = !state.isFirstStep,
+                isItMode = isItMode,
                 onBack = onPreviousStep,
                 onClose = onClose
             )
@@ -159,6 +162,7 @@ private fun WizardTopBar(
     currentStep: WizardStep,
     progress: Float,
     canGoBack: Boolean,
+    isItMode: Boolean,
     onBack: () -> Unit,
     onClose: () -> Unit
 ) {
@@ -167,10 +171,10 @@ private fun WizardTopBar(
             title = {
                 Text(
                     text = when (currentStep) {
-                        WizardStep.BASIC_INFO -> "Шаг 1 из 4"
-                        WizardStep.PHOTOS -> "Шаг 2 из 4"
-                        WizardStep.INTERESTS -> "Шаг 3 из 4"
-                        WizardStep.PREVIEW -> "Шаг 4 из 4"
+                        WizardStep.BASIC_INFO -> if (isItMode) "Шаг 1 из 4: IT-профиль" else "Шаг 1 из 4"
+                        WizardStep.PHOTOS -> if (isItMode) "Шаг 2 из 4: Фото и портфолио" else "Шаг 2 из 4"
+                        WizardStep.INTERESTS -> if (isItMode) "Шаг 3 из 4: Стек и интересы" else "Шаг 3 из 4"
+                        WizardStep.PREVIEW -> if (isItMode) "Шаг 4 из 4: Предпросмотр IT-профиля" else "Шаг 4 из 4"
                     },
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant

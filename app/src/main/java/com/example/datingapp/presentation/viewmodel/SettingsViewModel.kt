@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.datingapp.data.repository.SettingsRepository
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -20,6 +19,9 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     val languageCode: StateFlow<String> = repository.languageCode
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "ru")
 
+    val isItMode: StateFlow<Boolean> = repository.isItMode
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+
     fun toggleTheme(isDark: Boolean) {
         viewModelScope.launch {
             repository.setDarkTheme(isDark)
@@ -29,6 +31,12 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     fun setLanguage(code: String) {
         viewModelScope.launch {
             repository.setLanguage(code)
+        }
+    }
+
+    fun setItMode(enabled: Boolean) {
+        viewModelScope.launch {
+            repository.setItMode(enabled)
         }
     }
 }

@@ -26,13 +26,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             val isDarkTheme by settingsViewModel.isDarkTheme.collectAsState()
             val languageCode by settingsViewModel.languageCode.collectAsState()
+            val isItMode by settingsViewModel.isItMode.collectAsState()
 
             val context = LocalContext.current
             LaunchedEffect(languageCode) {
                 LocaleHelper.setLocale(context, languageCode)
             }
 
-            DatingAppTheme(darkTheme = isDarkTheme) {
+            DatingAppTheme(darkTheme = isDarkTheme, isItMode = isItMode) {
                 val navController = rememberNavController()
                 AppNavGraph(navController = navController)
             }

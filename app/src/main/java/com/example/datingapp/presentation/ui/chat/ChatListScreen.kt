@@ -25,6 +25,7 @@ import coil.compose.AsyncImage
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import com.example.datingapp.domain.model.ChatContacts
+import com.example.datingapp.presentation.ui.theme.LocalIsItMode
 
 // Data classes
 data class NewMatch(
@@ -61,8 +62,9 @@ fun ChatListScreen(
     onChatClick: (String) -> Unit = {},
     onMatchClick: (String) -> Unit = {}
 ) {
-    val newMatches = remember { getDummyMatches() }
-    val chats = remember { getDummyChats() }
+    val isItMode = LocalIsItMode.current
+    val newMatches = remember(isItMode) { getDummyMatches(isItMode) }
+    val chats = remember(isItMode) { getDummyChats(isItMode) }
 
     Box(
         modifier = Modifier
@@ -98,7 +100,7 @@ fun ChatListScreen(
             // Messages Header
             item {
                 Text(
-                    text = "Сообщения",
+                    text = if (isItMode) "Обсуждения" else "Сообщения",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = TextPrimary,
@@ -120,6 +122,7 @@ fun ChatListScreen(
 
 @Composable
 private fun SearchBar(modifier: Modifier = Modifier) {
+    val isItMode = LocalIsItMode.current
     var searchText by remember { mutableStateOf("") }
 
     Surface(
@@ -142,7 +145,9 @@ private fun SearchBar(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
-                text = if (searchText.isEmpty()) "Поиск" else searchText,
+                text = if (searchText.isEmpty()) {
+                    if (isItMode) "Поиск по коллегам и чатам" else "Поиск"
+                } else searchText,
                 style = MaterialTheme.typography.bodyLarge,
                 color = TextSecondary
             )
@@ -155,11 +160,12 @@ private fun NewMatchesSection(
     matches: List<NewMatch>,
     onMatchClick: (String) -> Unit
 ) {
+    val isItMode = LocalIsItMode.current
     Column(
         modifier = Modifier.padding(vertical = 4.dp)
     ) {
         Text(
-            text = "Новые пары",
+            text = if (isItMode) "Новые коннекты" else "Новые пары",
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = TextPrimary,
@@ -359,23 +365,47 @@ private fun ChatItem(
 }
 
 // Dummy data - synced with ChatContacts
-private fun getDummyMatches(): List<NewMatch> = listOf(
-    NewMatch("1", "Анна", "https://picsum.photos/seed/match1/200/200", true),
-    NewMatch("2", "Мария", "https://picsum.photos/seed/match2/200/200", false),
-    NewMatch("3", "Елена", "https://picsum.photos/seed/match3/200/200", true),
-    NewMatch("4", "София", "https://picsum.photos/seed/match4/200/200", false),
-    NewMatch("5", "Дарья", "https://picsum.photos/seed/match5/200/200", true),
-    NewMatch("6", "Алиса", "https://picsum.photos/seed/match6/200/200", false)
-)
-
-private fun getDummyChats(): List<ChatPreview> = ChatContacts.contacts.mapIndexed { index, contact ->
-    val lastMessages = listOf(
-        "Привет! Как дела? 😊",
-        "Давай встретимся завтра?",
-        "Отличное фото!",
-        "Спасибо за приятный вечер 💕",
-        "Ты где?"
+private fun getDummyMatches(isItMode: Boolean): List<NewMatch> = if (isItMode) {
+    listOf(
+        NewMatch("it_1", "Егор", "https://picsum.photos/seed/it_match1/200/200", true),
+        NewMatch("it_2", "Лев", "https://picsum.photos/seed/it_match2/200/200", true),
+        NewMatch("it_3", "Макс", "https://picsum.photos/seed/it_match3/200/200", false),
+        NewMatch("it_4", "Кирилл", "https://picsum.photos/seed/it_match4/200/200", false),
+        NewMatch("it_5", "Иван", "https://picsum.photos/seed/it_match5/200/200", true)
     )
+} else {
+    listOf(
+        NewMatch("1", "Анна", "https://picsum.photos/seed/match1/200/200", true),
+        NewMatch("2", "Мария", "https://picsum.photos/seed/match2/200/200", false),
+        NewMatch("3", "Елена", "https://picsum.photos/seed/match3/200/200", true),
+        NewMatch("4", "София", "https://picsum.photos/seed/match4/200/200", false),
+        NewMatch("5", "Дарья", "https://picsum.photos/seed/match5/200/200", true),
+        NewMatch("6", "Алиса", "https://picsum.photos/seed/match6/200/200", false)
+    )
+}
+
+private fun getDummyChats(isItMode: Boolean): List<ChatPreview> = (if (isItMode) {
+    ChatContacts.itContacts
+} else {
+    ChatContacts.contacts
+}).mapIndexed { index, contact ->
+    val lastMessages = if (isItMode) {
+        listOf(
+            "Сможешь посмотреть мой PR сегодня?",
+            "Помоги разобраться с ошибкой в логах",
+            "Го обсудим идею стартапа после 19:00",
+            "Есть минутка на архитектурный созвон?",
+            "Какой стек лучше взять для MVP?"
+        )
+    } else {
+        listOf(
+            "Привет! Как дела? 😊",
+            "Давай встретимся завтра?",
+            "Отличное фото!",
+            "Спасибо за приятный вечер 💕",
+            "Ты где?"
+        )
+    }
     val timestamps = listOf("2 мин", "15 мин", "1 час", "3 часа", "Вчера")
     val unreadCounts = listOf(3, 1, 0, 0, 5)
 

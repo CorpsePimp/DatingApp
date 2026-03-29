@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.datingapp.domain.model.ChatMessage
+import com.example.datingapp.presentation.ui.theme.LocalIsItMode
 import com.example.datingapp.presentation.viewmodel.ChatDetailUiState
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -47,6 +48,7 @@ fun ChatDetailScreen(
     onSendClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
+    val isItMode = LocalIsItMode.current
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -78,6 +80,7 @@ fun ChatDetailScreen(
                 photoUrl = uiState.contact?.photoUrl ?: "",
                 isOnline = uiState.contact?.isOnline ?: false,
                 isVerified = uiState.contact?.isVerified ?: false,
+                isItMode = isItMode,
                 onBackClick = onBackClick
             )
 
@@ -110,6 +113,7 @@ fun ChatDetailScreen(
                 value = uiState.inputText,
                 onValueChange = onInputChange,
                 onSendClick = onSendClick,
+                isItMode = isItMode,
                 isEnabled = !uiState.isTyping
             )
         }
@@ -123,6 +127,7 @@ private fun ChatTopBar(
     photoUrl: String,
     isOnline: Boolean,
     isVerified: Boolean,
+    isItMode: Boolean,
     onBackClick: () -> Unit
 ) {
     Surface(
@@ -167,7 +172,11 @@ private fun ChatTopBar(
                 }
 
                 Text(
-                    text = if (isOnline) "В сети" else "Был(а) недавно",
+                    text = if (isOnline) {
+                        if (isItMode) "В сети" else "В сети"
+                    } else {
+                        if (isItMode) "Недавно в коде" else "Был(а) недавно"
+                    },
                     style = MaterialTheme.typography.bodySmall,
                     color = if (isOnline) OnlineGreen else MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -339,6 +348,7 @@ private fun ChatInputField(
     value: String,
     onValueChange: (String) -> Unit,
     onSendClick: () -> Unit,
+    isItMode: Boolean,
     isEnabled: Boolean
 ) {
     Surface(
@@ -370,7 +380,7 @@ private fun ChatInputField(
                 onValueChange = onValueChange,
                 placeholder = {
                     Text(
-                        "Написать сообщение...",
+                        if (isItMode) "Написать запрос, идею или вопрос..." else "Написать сообщение...",
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 },

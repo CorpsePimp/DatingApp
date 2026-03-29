@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -66,12 +67,60 @@ private val DarkColorScheme = darkColorScheme(
     outlineVariant = Color(0x66FFFFFF)
 )
 
+private val ItLightColorScheme = lightColorScheme(
+    primary = ItPrimary,
+    onPrimary = Color.White,
+    primaryContainer = Color(0xFFDDE3FF),
+    onPrimaryContainer = Color(0xFF1F255A),
+    secondary = ItSecondary,
+    onSecondary = Color.White,
+    secondaryContainer = Color(0xFFD8F6E0),
+    onSecondaryContainer = Color(0xFF173B25),
+    tertiary = Color(0xFF0969DA),
+    onTertiary = Color.White,
+    background = ItBackgroundLight,
+    onBackground = Color(0xFF1F2328),
+    surface = ItCardLight,
+    onSurface = Color(0xFF1F2328),
+    error = ErrorRed,
+    onError = Color.White,
+    outline = ItBorderLight,
+    outlineVariant = Color(0xFFE6EDF3)
+)
+
+private val ItDarkColorScheme = darkColorScheme(
+    primary = ItPrimaryDark,
+    onPrimary = Color(0xFF10153D),
+    primaryContainer = Color(0xFF232A62),
+    onPrimaryContainer = Color(0xFFDDE3FF),
+    secondary = ItSecondaryDark,
+    onSecondary = Color(0xFF0E2D1A),
+    secondaryContainer = Color(0xFF1B5732),
+    onSecondaryContainer = Color(0xFFD8F6E0),
+    tertiary = Color(0xFF58A6FF),
+    onTertiary = Color(0xFF08213E),
+    background = ItBackgroundDark,
+    onBackground = Color(0xFFE6EDF3),
+    surface = ItCardDark,
+    onSurface = Color(0xFFE6EDF3),
+    error = ErrorRed,
+    onError = Color.White,
+    outline = ItBorderDark,
+    outlineVariant = Color(0xFF484F58)
+)
+
 @Composable
 fun DatingAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    isItMode: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+    val colorScheme = when {
+        isItMode && darkTheme -> ItDarkColorScheme
+        isItMode && !darkTheme -> ItLightColorScheme
+        darkTheme -> DarkColorScheme
+        else -> LightColorScheme
+    }
 
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -82,9 +131,11 @@ fun DatingAppTheme(
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+    CompositionLocalProvider(LocalIsItMode provides isItMode) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content
+        )
+    }
 }

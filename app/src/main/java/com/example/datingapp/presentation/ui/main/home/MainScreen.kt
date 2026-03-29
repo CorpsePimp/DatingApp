@@ -18,6 +18,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.datingapp.domain.model.getDummyUsers
+import com.example.datingapp.domain.model.getItDummyUsers
+import com.example.datingapp.presentation.ui.theme.LocalIsItMode
 import com.example.datingapp.presentation.ui.theme.*
 
 @Composable
@@ -25,7 +27,10 @@ fun MainScreen(
     onNavigateToProfile: () -> Unit = {},
     onNavigateToChat: () -> Unit = {}
 ) {
-    val users = remember { getDummyUsers().toMutableStateList() }
+    val isItMode = LocalIsItMode.current
+    val users = remember(isItMode) {
+        (if (isItMode) getItDummyUsers() else getDummyUsers()).toMutableStateList()
+    }
     var currentIndex by remember { mutableIntStateOf(0) }
     val cardState = remember { SwipeableCardState() }
 
@@ -34,7 +39,10 @@ fun MainScreen(
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(BackgroundStart, BackgroundEnd)
+                    colors = listOf(
+                        MaterialTheme.colorScheme.background,
+                        MaterialTheme.colorScheme.secondaryContainer
+                    )
                 )
             )
     ) {
@@ -110,7 +118,7 @@ fun MainScreen(
                         cardState.swipeLeft()
                     },
                     onSuperLike = {
-                        // Super like action - можно добавить позже
+                        // Quick ping / super like action
                         currentIndex++
                         if (currentIndex >= users.size) currentIndex = 0
                     },
@@ -153,6 +161,7 @@ fun CardPlaceholder(
 fun NoMoreUsersMessage(
     onReload: () -> Unit
 ) {
+    val isItMode = LocalIsItMode.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -168,7 +177,7 @@ fun NoMoreUsersMessage(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Вы просмотрели всех!",
+            text = if (isItMode) "Все IT-профили просмотрены!" else "Вы просмотрели всех!",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
@@ -177,7 +186,7 @@ fun NoMoreUsersMessage(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Скоро появятся новые анкеты",
+            text = if (isItMode) "Скоро появятся новые участники сообщества" else "Скоро появятся новые анкеты",
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -195,7 +204,7 @@ fun NoMoreUsersMessage(
                 .height(56.dp)
         ) {
             Text(
-                text = "Посмотреть снова",
+                text = if (isItMode) "Обновить IT-ленту" else "Посмотреть снова",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimary
@@ -211,6 +220,7 @@ fun ActionButtonsRow(
     onLike: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val isItMode = LocalIsItMode.current
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -218,7 +228,7 @@ fun ActionButtonsRow(
     ) {
         // Dislike Button
         ActionButton(
-            icon = Icons.Rounded.Close,
+            icon = if (isItMode) Icons.Rounded.ThumbDown else Icons.Rounded.Close,
             onClick = onDislike,
             backgroundColor = Color.White,
             iconTint = ErrorRed,
@@ -227,7 +237,7 @@ fun ActionButtonsRow(
 
         // Super Like Button
         ActionButton(
-            icon = Icons.Rounded.Star,
+            icon = if (isItMode) Icons.Rounded.Build else Icons.Rounded.Star,
             onClick = onSuperLike,
             backgroundColor = Color(0xFF00BFFF),
             iconTint = Color.White,
@@ -236,7 +246,7 @@ fun ActionButtonsRow(
 
         // Like Button
         ActionButton(
-            icon = Icons.Rounded.Favorite,
+            icon = if (isItMode) Icons.Rounded.ThumbUp else Icons.Rounded.Favorite,
             onClick = onLike,
             backgroundColor = Color.White,
             iconTint = SuccessGreen,

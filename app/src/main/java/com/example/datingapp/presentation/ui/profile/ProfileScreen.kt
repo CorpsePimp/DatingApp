@@ -29,6 +29,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.rounded.*
 import com.example.datingapp.domain.model.UserProfile
+import com.example.datingapp.presentation.ui.theme.LocalIsItMode
 
 
 // Light theme colors
@@ -50,6 +51,7 @@ fun ProfileScreen(
     onEditProfile: () -> Unit = {},
     onSettingsClick: () -> Unit = {}
 ) {
+    val isItMode = LocalIsItMode.current
     val scrollState = rememberScrollState()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -100,22 +102,22 @@ fun ProfileScreen(
                 ProfileHeader(onSettingsClick = onSettingsClick)
 
                 // Profile Avatar Section
-                ProfileAvatarSection(profile = profile)
+                ProfileAvatarSection(profile = profile, isItMode = isItMode)
 
                 Spacer(modifier = Modifier.height(24.dp))
 
                 // Bento Grid
-                BentoGridSection()
+                BentoGridSection(isItMode = isItMode)
 
                 Spacer(modifier = Modifier.height(24.dp))
 
                 // Edit Profile Button
-                EditProfileButton(onClick = onEditProfile)
+                EditProfileButton(onClick = onEditProfile, isItMode = isItMode)
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Stats Section
-                StatsSection()
+                StatsSection(isItMode = isItMode)
             }
         }
     }
@@ -188,19 +190,19 @@ private fun ProfileHeader(onSettingsClick: () -> Unit) {
 }
 
 @Composable
-private fun ProfileAvatarSection(profile: UserProfile? = null) {
+private fun ProfileAvatarSection(profile: UserProfile? = null, isItMode: Boolean) {
     val profileCompletion = profile?.profileCompletion ?: 0.78f
     val photoUrl = profile?.photoUrls?.firstOrNull()
         ?: "https://picsum.photos/seed/profile/400/400"
     val displayName = if (profile != null && profile.name.isNotBlank()) {
         profile.name
     } else {
-        "Александр"
+        if (isItMode) "Максим" else "Александр"
     }
     val displayCity = if (profile != null && profile.city.isNotBlank()) {
         profile.city
     } else {
-        "Москва, Россия"
+        if (isItMode) "Санкт-Петербург" else "Москва, Россия"
     }
 
     Column(
@@ -253,7 +255,7 @@ private fun ProfileAvatarSection(profile: UserProfile? = null) {
 
         // Name
         Text(
-            text = "$displayName, 25",
+            text = if (isItMode) "$displayName, Android Dev" else "$displayName, 25",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             color = TextPrimary
@@ -318,7 +320,7 @@ private fun CircularProgressRing(
 }
 
 @Composable
-private fun BentoGridSection() {
+private fun BentoGridSection(isItMode: Boolean) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -334,14 +336,14 @@ private fun BentoGridSection() {
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             FeatureCard(
-                title = "Режим\nпутешествий",
-                icon = Icons.Outlined.Flight,
+                title = if (isItMode) "Open Source\nрежим" else "Режим\nпутешествий",
+                icon = if (isItMode) Icons.Outlined.Work else Icons.Outlined.Flight,
                 gradientColors = listOf(Color(0xFF4158D0), Color(0xFFC850C0)),
                 modifier = Modifier.weight(1f)
             )
             FeatureCard(
-                title = "Буст",
-                icon = Icons.Rounded.RocketLaunch,
+                title = if (isItMode) "Отклики" else "Буст",
+                icon = if (isItMode) Icons.Rounded.Group else Icons.Rounded.RocketLaunch,
                 value = "5",
                 gradientColors = listOf(Color(0xFFFF9A00), Color(0xFFFF5F00)),
                 modifier = Modifier.weight(1f)
@@ -354,15 +356,15 @@ private fun BentoGridSection() {
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             FeatureCard(
-                title = "Супер\nлайки",
-                icon = Icons.Rounded.Star,
+                title = if (isItMode) "Code\nReview" else "Супер\nлайки",
+                icon = if (isItMode) Icons.Rounded.Build else Icons.Rounded.Star,
                 value = "3",
                 gradientColors = listOf(Color(0xFF00D4FF), Color(0xFF0099FF)),
                 modifier = Modifier.weight(1f)
             )
             FeatureCard(
-                title = "Топ Пикс",
-                icon = Icons.Rounded.LocalFireDepartment,
+                title = if (isItMode) "Startup\nIdeas" else "Топ Пикс",
+                icon = if (isItMode) Icons.Rounded.Lightbulb else Icons.Rounded.LocalFireDepartment,
                 gradientColors = listOf(Color(0xFFFF416C), Color(0xFFFF4B2B)),
                 modifier = Modifier.weight(1f)
             )
@@ -424,7 +426,7 @@ private fun PremiumCard() {
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Безлимитные лайки и функции",
+                        text = "Безлимитные функции и приоритет в подборе",
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.White.copy(alpha = 0.8f)
                     )
@@ -525,7 +527,7 @@ private fun FeatureCard(
 }
 
 @Composable
-private fun EditProfileButton(onClick: () -> Unit) {
+private fun EditProfileButton(onClick: () -> Unit, isItMode: Boolean) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -554,7 +556,7 @@ private fun EditProfileButton(onClick: () -> Unit) {
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = "Редактировать профиль",
+                text = if (isItMode) "Редактировать IT-профиль" else "Редактировать профиль",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
@@ -563,14 +565,14 @@ private fun EditProfileButton(onClick: () -> Unit) {
 }
 
 @Composable
-private fun StatsSection() {
+private fun StatsSection(isItMode: Boolean) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
     ) {
         Text(
-            text = "Статистика",
+            text = if (isItMode) "Активность" else "Статистика",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground,
@@ -589,11 +591,11 @@ private fun StatsSection() {
                     .padding(20.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                StatItem(value = "142", label = "Лайки")
+                StatItem(value = "142", label = if (isItMode) "Коннекты" else "Лайки")
                 StatDivider()
-                StatItem(value = "28", label = "Мэтчи")
+                StatItem(value = "28", label = if (isItMode) "Коллабы" else "Мэтчи")
                 StatDivider()
-                StatItem(value = "12", label = "Чаты")
+                StatItem(value = "12", label = if (isItMode) "Чаты" else "Чаты")
             }
         }
     }

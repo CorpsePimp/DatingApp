@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
+import com.example.datingapp.presentation.ui.theme.LocalIsItMode
 
 // Design system colors
 private val CardBackground = Color(0xFFFFFFFF)
@@ -39,13 +40,14 @@ private val SponsoredBadgeColor = Color(0xFF9E9E9E)
 fun SponsoredBadge(
     modifier: Modifier = Modifier
 ) {
+    val isItMode = LocalIsItMode.current
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
         color = SponsoredBadgeColor.copy(alpha = 0.15f)
     ) {
         Text(
-            text = "Реклама",
+            text = if (isItMode) "Партнер" else "Реклама",
             style = MaterialTheme.typography.labelSmall,
             color = SponsoredBadgeColor,
             fontWeight = FontWeight.Medium,
@@ -69,6 +71,7 @@ fun PartnerAdBanner(
     modifier: Modifier = Modifier,
     cornerRadius: Dp = 28.dp
 ) {
+    val isItMode = LocalIsItMode.current
     val shape = RoundedCornerShape(cornerRadius)
 
     Surface(
@@ -159,7 +162,7 @@ fun PartnerAdBanner(
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
-                                imageVector = Icons.Rounded.LocalFlorist,
+                                imageVector = if (isItMode) Icons.Rounded.Memory else Icons.Rounded.LocalFlorist,
                                 contentDescription = null,
                                 tint = Color.White,
                                 modifier = Modifier.size(40.dp)

@@ -15,6 +15,7 @@ class SettingsRepository(private val context: Context) {
     companion object {
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
         private val THEME_KEY = booleanPreferencesKey("is_dark_theme")
+        private val IT_MODE_KEY = booleanPreferencesKey("is_it_mode")
         private val LANGUAGE_KEY = stringPreferencesKey("language_code")
     }
 
@@ -30,6 +31,11 @@ class SettingsRepository(private val context: Context) {
             preferences[LANGUAGE_KEY] ?: "ru" // Default to Russian as per context/names
         }
 
+    val isItMode: Flow<Boolean> = context.dataStore.data
+        .map { preferences ->
+            preferences[IT_MODE_KEY] ?: false
+        }
+
     suspend fun setDarkTheme(isDark: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[THEME_KEY] = isDark
@@ -39,6 +45,12 @@ class SettingsRepository(private val context: Context) {
     suspend fun setLanguage(code: String) {
         context.dataStore.edit { preferences ->
             preferences[LANGUAGE_KEY] = code
+        }
+    }
+
+    suspend fun setItMode(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[IT_MODE_KEY] = enabled
         }
     }
 }

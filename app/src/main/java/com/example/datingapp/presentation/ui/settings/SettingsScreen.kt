@@ -40,6 +40,7 @@ fun SettingsScreen(
 ) {
     val isDarkTheme by viewModel.isDarkTheme.collectAsState()
     val languageCode by viewModel.languageCode.collectAsState()
+    val isItMode by viewModel.isItMode.collectAsState()
 
 
     Box(
@@ -101,6 +102,24 @@ fun SettingsScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            SettingItem(
+                title = "IT Mode",
+                subtitle = "Режим для поиска друзей, менторов и команды в IT",
+                control = {
+                    Switch(
+                        checked = isItMode,
+                        onCheckedChange = { viewModel.setItMode(it) },
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = MaterialTheme.colorScheme.primary,
+                            checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+                            uncheckedThumbColor = MaterialTheme.colorScheme.outline
+                        )
+                    )
+                }
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             // Language Setting
             SettingItem(
                 title = stringResource(id = R.string.language_title),
@@ -135,6 +154,7 @@ fun SettingsScreen(
 @Composable
 fun SettingItem(
     title: String,
+    subtitle: String? = null,
     control: @Composable () -> Unit
 ) {
     Card(
@@ -151,11 +171,22 @@ fun SettingItem(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                if (!subtitle.isNullOrBlank()) {
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = subtitle,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.width(12.dp))
             control()
         }
     }

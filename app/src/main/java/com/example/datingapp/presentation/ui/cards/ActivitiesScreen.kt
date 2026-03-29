@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.rounded.*
+import com.example.datingapp.presentation.ui.theme.LocalIsItMode
 
 // Design system colors
 private val AccentOrange = Color(0xFFFF9800)
@@ -64,8 +65,9 @@ fun ActivitiesScreen(
     onVenueClick: (String) -> Unit = {},
     onAdClick: (String) -> Unit = {}
 ) {
+    val isItMode = LocalIsItMode.current
     val activities = remember { getActivityCards() }
-    val venues = remember { getLocalVenues() }
+    val venues = remember(isItMode) { getLocalVenues(isItMode) }
 
     Box(
         modifier = Modifier
@@ -92,7 +94,7 @@ fun ActivitiesScreen(
             // Section Header
             item {
                 Text(
-                    text = "Активности",
+                    text = if (isItMode) "IT-активности" else "Активности",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
@@ -102,8 +104,12 @@ fun ActivitiesScreen(
             // Top Feature Card - "Topics for Conversation"
             item {
                 FeatureCard(
-                    title = "Темы для разговора",
-                    subtitle = "Не знаешь о чём поговорить? Мы подготовили 100+ интересных тем!",
+                    title = if (isItMode) "Старт диалога" else "Темы для разговора",
+                    subtitle = if (isItMode) {
+                        "Подсказки для первого сообщения: ревью, баги, идеи, коллаборации."
+                    } else {
+                        "Не знаешь о чём поговорить? Мы подготовили 100+ интересных тем!"
+                    },
                     icon = Icons.Rounded.Chat,
                     gradientColors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.tertiary),
                     onClick = { onCardClick("topics") },
@@ -120,8 +126,8 @@ fun ActivitiesScreen(
                 ) {
                     // Dating Places
                     FeatureCard(
-                        title = "Места для свиданий",
-                        subtitle = "Лучшие локации рядом",
+                        title = if (isItMode) "IT-ивенты рядом" else "Места для свиданий",
+                        subtitle = if (isItMode) "Митапы, хакатоны и конференции" else "Лучшие локации рядом",
                         icon = Icons.Rounded.LocationOn,
                         gradientColors = listOf(AccentOrange, Color(0xFFFF5722)),
                         onClick = { onCardClick("places") },
@@ -132,8 +138,8 @@ fun ActivitiesScreen(
 
                     // Daily Quests
                     FeatureCard(
-                        title = "Ежедневные квесты",
-                        subtitle = "Выполняй и получай бонусы",
+                        title = if (isItMode) "Dev-челленджи" else "Ежедневные квесты",
+                        subtitle = if (isItMode) "Мини-задачи для прокачки и нетворка" else "Выполняй и получай бонусы",
                         icon = Icons.Rounded.EmojiEvents,
                         gradientColors = listOf(AccentBlue, Color(0xFF3F51B5)),
                         onClick = { onCardClick("quests") },
@@ -148,8 +154,12 @@ fun ActivitiesScreen(
             // Partner Ad Banner - Flowwow
             item {
                 PartnerAdBanner(
-                    title = "Flowwow",
-                    subtitle = "Доставка цветов и подарков для вашей половинки 💐",
+                    title = if (isItMode) "Tech Partner" else "Flowwow",
+                    subtitle = if (isItMode) {
+                        "Скидки на коворкинги, dev-кафе и подписки на образовательные платформы"
+                    } else {
+                        "Доставка цветов и подарков для вашей половинки 💐"
+                    },
                     imageUrl = "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=200&h=200&fit=crop",
                     gradientColors = listOf(FlowwowPrimary, FlowwowSecondary),
                     onClick = { onAdClick("flowwow") }
@@ -164,8 +174,8 @@ fun ActivitiesScreen(
                 ) {
                     // Ice Breakers
                     FeatureCard(
-                        title = "Ледоколы",
-                        subtitle = "Игры для знакомства",
+                        title = if (isItMode) "Ледоколы в IT" else "Ледоколы",
+                        subtitle = if (isItMode) "Вопросы для коллег и менторов" else "Игры для знакомства",
                         icon = Icons.Rounded.AcUnit,
                         gradientColors = listOf(Color(0xFF00BCD4), Color(0xFF0097A7)),
                         onClick = { onCardClick("icebreakers") },
@@ -176,8 +186,8 @@ fun ActivitiesScreen(
 
                     // Date Ideas
                     FeatureCard(
-                        title = "Идеи для свидания",
-                        subtitle = "Вдохновляйся",
+                        title = if (isItMode) "Идеи коллабораций" else "Идеи для свидания",
+                        subtitle = if (isItMode) "Pet-проекты и MVP-концепты" else "Вдохновляйся",
                         icon = Icons.Rounded.Lightbulb,
                         gradientColors = listOf(AccentGreen, Color(0xFF388E3C)),
                         onClick = { onCardClick("ideas") },
@@ -196,7 +206,7 @@ fun ActivitiesScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Рядом с вами",
+                        text = if (isItMode) "Локации для нетворка" else "Рядом с вами",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onBackground
@@ -240,8 +250,12 @@ fun ActivitiesScreen(
             // Second Ad Banner - Restaurant Partner
             item {
                 PartnerAdBanner(
-                    title = "Романтический ужин",
-                    subtitle = "Скидка 20% на ужин для двоих в ресторанах-партнёрах",
+                    title = if (isItMode) "Afterparty для IT-сообщества" else "Романтический ужин",
+                    subtitle = if (isItMode) {
+                        "Скидки на бары и пространства после митапов и конференций"
+                    } else {
+                        "Скидка 20% на ужин для двоих в ресторанах-партнёрах"
+                    },
                     imageUrl = "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&h=200&fit=crop",
                     gradientColors = listOf(Color(0xFF8E24AA), Color(0xFF5E35B1)),
                     onClick = { onAdClick("restaurant_partner") }
@@ -251,7 +265,7 @@ fun ActivitiesScreen(
             // Compatibility Games Section
             item {
                 Text(
-                    text = "Игры на совместимость",
+                    text = if (isItMode) "Интерактив для команды" else "Игры на совместимость",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground,
@@ -267,8 +281,8 @@ fun ActivitiesScreen(
                 ) {
                     // Quiz
                     FeatureCard(
-                        title = "Тест совместимости",
-                        subtitle = "Узнай свой %",
+                        title = if (isItMode) "Тест по ролям" else "Тест совместимости",
+                        subtitle = if (isItMode) "Насколько вы синхронны как команда" else "Узнай свой %",
                         icon = Icons.Rounded.Psychology,
                         gradientColors = listOf(Color(0xFFE91E63), Color(0xFFC2185B)),
                         onClick = { onCardClick("compatibility_quiz") },
@@ -279,8 +293,8 @@ fun ActivitiesScreen(
 
                     // Truth or Dare
                     FeatureCard(
-                        title = "Правда или Действие",
-                        subtitle = "Классика!",
+                        title = if (isItMode) "Блиц по кейсам" else "Правда или Действие",
+                        subtitle = if (isItMode) "Разбор рабочих сценариев" else "Классика!",
                         icon = Icons.Rounded.Casino,
                         gradientColors = listOf(Color(0xFFFF5722), Color(0xFFE64A19)),
                         onClick = { onCardClick("truth_or_dare") },
@@ -425,45 +439,20 @@ private fun getActivityCards(): List<ActivityCard> = listOf(
 )
 
 // Dummy data for local venues with real image URLs
-private fun getLocalVenues(): List<LocalVenue> = listOf(
-    LocalVenue(
-        id = "1",
-        name = "Кофемания",
-        category = "Кофейня",
-        imageUrl = "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=500&fit=crop",
-        rating = 4.8f,
-        isSponsored = true
-    ),
-    LocalVenue(
-        id = "2",
-        name = "Пушкин",
-        category = "Ресторан",
-        imageUrl = "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=500&fit=crop",
-        rating = 4.9f,
-        isSponsored = false
-    ),
-    LocalVenue(
-        id = "3",
-        name = "Wine & Crab",
-        category = "Винный бар",
-        imageUrl = "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&h=500&fit=crop",
-        rating = 4.7f,
-        isSponsored = true
-    ),
-    LocalVenue(
-        id = "4",
-        name = "Гараж",
-        category = "Бар",
-        imageUrl = "https://images.unsplash.com/photo-1572116469696-31de0f17cc34?w=400&h=500&fit=crop",
-        rating = 4.5f,
-        isSponsored = false
-    ),
-    LocalVenue(
-        id = "5",
-        name = "Москва-Сити",
-        category = "Смотровая",
-        imageUrl = "https://images.unsplash.com/photo-1513326738677-b964603b136d?w=400&h=500&fit=crop",
-        rating = 4.6f,
-        isSponsored = false
+private fun getLocalVenues(isItMode: Boolean): List<LocalVenue> = if (isItMode) {
+    listOf(
+        LocalVenue("1", "TechHub", "Коворкинг", "https://images.unsplash.com/photo-1497215842964-222b430dc094?w=400&h=500&fit=crop", 4.8f, true),
+        LocalVenue("2", "Code & Coffee", "Кофейня", "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=400&h=500&fit=crop", 4.7f, false),
+        LocalVenue("3", "Startup Garage", "Лофт", "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=500&fit=crop", 4.9f, true),
+        LocalVenue("4", "DevBar", "Бар", "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=400&h=500&fit=crop", 4.5f, false),
+        LocalVenue("5", "Meetup Point", "Ивент-площадка", "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=500&fit=crop", 4.6f, false)
     )
-)
+} else {
+    listOf(
+        LocalVenue("1", "Кофемания", "Кофейня", "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=500&fit=crop", 4.8f, true),
+        LocalVenue("2", "Пушкин", "Ресторан", "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=500&fit=crop", 4.9f, false),
+        LocalVenue("3", "Wine & Crab", "Винный бар", "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&h=500&fit=crop", 4.7f, true),
+        LocalVenue("4", "Гараж", "Бар", "https://images.unsplash.com/photo-1572116469696-31de0f17cc34?w=400&h=500&fit=crop", 4.5f, false),
+        LocalVenue("5", "Москва-Сити", "Смотровая", "https://images.unsplash.com/photo-1513326738677-b964603b136d?w=400&h=500&fit=crop", 4.6f, false)
+    )
+}
