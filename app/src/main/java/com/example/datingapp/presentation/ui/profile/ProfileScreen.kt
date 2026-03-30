@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,6 +29,7 @@ import coil.compose.AsyncImage
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.rounded.*
+import com.example.datingapp.R
 import com.example.datingapp.domain.model.UserProfile
 import com.example.datingapp.presentation.ui.theme.LocalIsItMode
 
@@ -143,7 +145,7 @@ private fun ProfileHeader(onSettingsClick: () -> Unit) {
         ) {
             Icon(
                 imageVector = Icons.Rounded.QrCode2,
-                contentDescription = "QR Code",
+                contentDescription = "QR-код",
                 tint = AccentPink,
                 modifier = Modifier.size(24.dp)
             )
@@ -168,7 +170,7 @@ private fun ProfileHeader(onSettingsClick: () -> Unit) {
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Notifications,
-                    contentDescription = "Notifications",
+                    contentDescription = "Уведомления",
                     tint = MaterialTheme.colorScheme.onSurface
                 )
             }
@@ -181,7 +183,7 @@ private fun ProfileHeader(onSettingsClick: () -> Unit) {
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Settings,
-                    contentDescription = "Settings",
+                    contentDescription = "Настройки",
                     tint = MaterialTheme.colorScheme.onSurface
                 )
             }
@@ -225,7 +227,7 @@ private fun ProfileAvatarSection(profile: UserProfile? = null, isItMode: Boolean
             // Avatar
             AsyncImage(
                 model = photoUrl,
-                contentDescription = "Profile photo",
+                contentDescription = "Фото профиля",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(120.dp)
@@ -269,7 +271,7 @@ private fun ProfileAvatarSection(profile: UserProfile? = null, isItMode: Boolean
         ) {
             Icon(
                 imageVector = Icons.Outlined.LocationOn,
-                contentDescription = "Location",
+                contentDescription = "Местоположение",
                 tint = TextSecondary,
                 modifier = Modifier.size(18.dp)
             )
@@ -336,7 +338,7 @@ private fun BentoGridSection(isItMode: Boolean) {
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             FeatureCard(
-                title = if (isItMode) "Open Source\nрежим" else "Режим\nпутешествий",
+                title = if (isItMode) "Режим\nopen source" else "Режим\nпутешествий",
                 icon = if (isItMode) Icons.Outlined.Work else Icons.Outlined.Flight,
                 gradientColors = listOf(Color(0xFF4158D0), Color(0xFFC850C0)),
                 modifier = Modifier.weight(1f)
@@ -356,14 +358,14 @@ private fun BentoGridSection(isItMode: Boolean) {
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             FeatureCard(
-                title = if (isItMode) "Code\nReview" else "Супер\nлайки",
+                title = if (isItMode) "Ревью\nкода" else "Супер\nлайки",
                 icon = if (isItMode) Icons.Rounded.Build else Icons.Rounded.Star,
                 value = "3",
                 gradientColors = listOf(Color(0xFF00D4FF), Color(0xFF0099FF)),
                 modifier = Modifier.weight(1f)
             )
             FeatureCard(
-                title = if (isItMode) "Startup\nIdeas" else "Топ Пикс",
+                title = if (isItMode) "Идеи\nстартапа" else "Топ Пикс",
                 icon = if (isItMode) Icons.Rounded.Lightbulb else Icons.Rounded.LocalFireDepartment,
                 gradientColors = listOf(Color(0xFFFF416C), Color(0xFFFF4B2B)),
                 modifier = Modifier.weight(1f)
@@ -418,7 +420,7 @@ private fun PremiumCard() {
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Premium",
+                            text = stringResource(R.string.profile_premium),
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
@@ -426,7 +428,7 @@ private fun PremiumCard() {
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Безлимитные функции и приоритет в подборе",
+                        text = stringResource(R.string.profile_premium_subtitle),
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.White.copy(alpha = 0.8f)
                     )
@@ -443,7 +445,7 @@ private fun PremiumCard() {
                     ) {
                         Icon(
                             imageVector = Icons.Rounded.ArrowForward,
-                            contentDescription = "Go to Premium",
+                            contentDescription = stringResource(R.string.profile_go_premium),
                             tint = Color.White,
                             modifier = Modifier.size(24.dp)
                         )

@@ -10,7 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.datingapp.R
 import com.example.datingapp.presentation.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,7 +40,7 @@ fun PlaceholderScreen(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.Rounded.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.cd_back),
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }

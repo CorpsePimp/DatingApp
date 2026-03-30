@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.datingapp.R
 import com.example.datingapp.presentation.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -94,14 +96,14 @@ fun LoginScreen(
             )
 
             Text(
-                text = "Welcome Back",
+                text = stringResource(R.string.auth_login_title),
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
                 color = TextPrimary
             )
 
             Text(
-                text = "Sign in to continue",
+                text = stringResource(R.string.auth_login_subtitle),
                 style = MaterialTheme.typography.bodyLarge,
                 color = TextSecondary,
                 modifier = Modifier.padding(bottom = 48.dp)
@@ -118,8 +120,8 @@ fun LoginScreen(
                     AuthTextField(
                         value = email,
                         onValueChange = { email = it },
-                        label = "Email",
-                        placeholder = "Enter your email",
+                        label = stringResource(R.string.auth_email_label),
+                        placeholder = stringResource(R.string.auth_email_placeholder),
                         leadingIcon = Icons.Rounded.Email,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Email,
@@ -136,8 +138,8 @@ fun LoginScreen(
                     AuthTextField(
                         value = password,
                         onValueChange = { password = it },
-                        label = "Password",
-                        placeholder = "Enter your password",
+                        label = stringResource(R.string.auth_password_label),
+                        placeholder = stringResource(R.string.auth_password_placeholder),
                         leadingIcon = Icons.Rounded.Lock,
                         trailingIcon = if (passwordVisible) Icons.Rounded.Info else Icons.Rounded.Lock,
                         onTrailingIconClick = { passwordVisible = !passwordVisible },
@@ -162,7 +164,7 @@ fun LoginScreen(
                         horizontalArrangement = Arrangement.End
                     ) {
                         Text(
-                            text = "Forgot Password?",
+                            text = stringResource(R.string.auth_forgot_password),
                             style = MaterialTheme.typography.bodySmall,
                             color = DeepPink,
                             modifier = Modifier.clickable { /* Handle forgot password */ }
@@ -173,7 +175,7 @@ fun LoginScreen(
 
                     // Login Button
                     GradientButton(
-                        text = "Sign In",
+                        text = stringResource(R.string.auth_sign_in),
                         onClick = {
                             isLoading = true
                             focusManager.clearFocus()
@@ -193,7 +195,7 @@ fun LoginScreen(
                     ) {
                         HorizontalDivider(modifier = Modifier.weight(1f), color = TextHint.copy(alpha = 0.3f))
                         Text(
-                            text = "OR",
+                            text = stringResource(R.string.auth_or).uppercase(),
                             style = MaterialTheme.typography.bodySmall,
                             color = TextSecondary,
                             modifier = Modifier.padding(horizontal = 16.dp)
@@ -205,7 +207,7 @@ fun LoginScreen(
 
                     // Social Login Buttons
                     SocialLoginButton(
-                        text = "Continue with VK",
+                        text = stringResource(R.string.auth_continue_vk),
                         icon = Icons.Rounded.AccountCircle, // Replace with VK icon
                         backgroundColor = VKBlue,
                         onClick = { onLoginSuccess() },
@@ -215,7 +217,7 @@ fun LoginScreen(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     SocialLoginButton(
-                        text = "Continue with Mail.ru",
+                        text = stringResource(R.string.auth_continue_mailru),
                         icon = Icons.Rounded.Email, // Replace with Mail.ru icon
                         backgroundColor = MailRuBlue,
                         onClick = { onLoginSuccess() },
@@ -232,12 +234,12 @@ fun LoginScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Don't have an account? ",
+                    text = stringResource(R.string.auth_no_account),
                     style = MaterialTheme.typography.bodyMedium,
                     color = TextSecondary
                 )
                 Text(
-                    text = "Sign Up",
+                    text = stringResource(R.string.auth_sign_up_link),
                     style = MaterialTheme.typography.bodyMedium,
                     color = DeepPink,
                     fontWeight = FontWeight.Bold,

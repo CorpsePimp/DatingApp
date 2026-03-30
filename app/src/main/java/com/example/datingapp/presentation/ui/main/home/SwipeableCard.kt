@@ -18,11 +18,14 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
+import com.example.datingapp.R
 import com.example.datingapp.domain.model.User
+import com.example.datingapp.presentation.ui.theme.LocalIsItMode
 import com.example.datingapp.presentation.ui.theme.*
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -59,6 +62,9 @@ fun SwipeableCard(
     modifier: Modifier = Modifier,
     state: SwipeableCardState = rememberSwipeableCardState()
 ) {
+    val isItMode = LocalIsItMode.current
+    val swipeLeftLabel = stringResource(if (isItMode) R.string.swipe_skip_it else R.string.swipe_nope)
+    val swipeRightLabel = stringResource(if (isItMode) R.string.swipe_connect_it else R.string.swipe_like)
     val scope = rememberCoroutineScope()
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val screenWidthPx = with(LocalDensity.current) { screenWidth.toPx() }
@@ -193,7 +199,7 @@ fun SwipeableCard(
                 // User Photo with Coil
                 SubcomposeAsyncImage(
                     model = user.photoUrl,
-                    contentDescription = "Photo of ${user.name}",
+                    contentDescription = stringResource(R.string.cd_photo_user, user.name),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize(),
                     loading = {
@@ -235,7 +241,7 @@ fun SwipeableCard(
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.Person,
-                                contentDescription = "Default avatar",
+                                contentDescription = stringResource(R.string.cd_default_avatar),
                                 tint = Color.White.copy(alpha = 0.5f),
                                 modifier = Modifier.size(120.dp)
                             )
@@ -253,7 +259,7 @@ fun SwipeableCard(
                         contentAlignment = Alignment.TopEnd
                     ) {
                         Text(
-                            text = "NOPE",
+                            text = swipeLeftLabel,
                             style = MaterialTheme.typography.displaySmall,
                             color = Color.White.copy(alpha = swipeProgress),
                             fontWeight = FontWeight.Bold
@@ -271,7 +277,7 @@ fun SwipeableCard(
                         contentAlignment = Alignment.TopStart
                     ) {
                         Text(
-                            text = "LIKE",
+                            text = swipeRightLabel,
                             style = MaterialTheme.typography.displaySmall,
                             color = Color.White.copy(alpha = swipeProgress),
                             fontWeight = FontWeight.Bold

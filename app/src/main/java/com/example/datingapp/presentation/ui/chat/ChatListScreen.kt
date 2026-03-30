@@ -20,10 +20,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
+import com.example.datingapp.R
 import com.example.datingapp.domain.model.ChatContacts
 import com.example.datingapp.presentation.ui.theme.LocalIsItMode
 
@@ -139,7 +141,7 @@ private fun SearchBar(modifier: Modifier = Modifier) {
         ) {
             Icon(
                 imageVector = Icons.Rounded.Search,
-                contentDescription = "Search",
+                contentDescription = stringResource(R.string.cd_search),
                 tint = TextSecondary,
                 modifier = Modifier.size(22.dp)
             )
@@ -309,7 +311,7 @@ private fun ChatItem(
                         Spacer(modifier = Modifier.width(6.dp))
                         Icon(
                             imageVector = Icons.Rounded.Verified,
-                            contentDescription = "Verified",
+                            contentDescription = stringResource(R.string.cd_verified),
                             tint = Color(0xFF1DA1F2),
                             modifier = Modifier.size(18.dp)
                         )

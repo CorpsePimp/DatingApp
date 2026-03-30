@@ -15,7 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.datingapp.R
 import com.example.datingapp.presentation.viewmodel.EditProfileWizardState
 import com.example.datingapp.presentation.viewmodel.WizardStep
 import com.example.datingapp.presentation.ui.theme.LocalIsItMode
@@ -185,7 +187,7 @@ private fun WizardTopBar(
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.cd_back),
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
@@ -195,7 +197,7 @@ private fun WizardTopBar(
                 IconButton(onClick = onClose) {
                     Icon(
                         imageVector = Icons.Rounded.Close,
-                        contentDescription = "Close",
+                        contentDescription = "Закрыть",
                         tint = MaterialTheme.colorScheme.onSurface
                     )
                 }

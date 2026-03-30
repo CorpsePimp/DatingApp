@@ -33,20 +33,17 @@ data class UserProfile(
  */
 object AvailableInterests {
     val all = listOf(
-        // Most Popular (Top Tier)
-        "Fitness", "Travel", "Movies", "Music", "Photography",
-        "Cooking", "Reading", "Gaming", "Sports", "Art",
-        "Dancing", "Yoga", "Hiking", "Coffee", "Wine",
-        "Fashion", "Dogs", "Cats", "Nature", "Beach",
-        // Popular (Mid Tier)
-        "Netflix", "Concerts", "Foodie", "Running", "Gym",
-        "Swimming", "Cycling", "Meditation", "Volunteering", "Writing",
-        "Poetry", "Theater", "Comedy", "Karaoke", "Board Games",
-        "Camping", "Fishing", "Golf", "Tennis", "Basketball",
-        // Niche (Lower Tier)
-        "Anime", "Manga", "K-Pop", "Astrology", "Tattoos",
-        "Vintage", "Sneakers", "Crypto", "Investing", "Trading",
-        "Nootropics", "Biohacking", "Startups", "Programming", "AI",
-        "VR", "Esports", "Cosplay", "LARP", "DnD"
+        "Фитнес", "Путешествия", "Кино", "Музыка", "Фотография",
+        "Готовка", "Чтение", "Игры", "Спорт", "Искусство",
+        "Танцы", "Йога", "Походы", "Кофе", "Вино",
+        "Мода", "Собаки", "Кошки", "Природа", "Пляж",
+        "Netflix", "Концерты", "Гастрономия", "Бег", "Зал",
+        "Плавание", "Велосипед", "Медитация", "Волонтёрство", "Писательство",
+        "Поэзия", "Театр", "Комедии", "Караоке", "Настольные игры",
+        "Кемпинг", "Рыбалка", "Гольф", "Теннис", "Баскетбол",
+        "Аниме", "Манга", "K-Pop", "Астрология", "Тату",
+        "Винтаж", "Кроссовки", "Крипто", "Инвестиции", "Трейдинг",
+        "Ноотропы", "Биохакинг", "Стартапы", "Программирование", "AI",
+        "VR", "Киберспорт", "Косплей", "LARP", "DnD"
     )
 }

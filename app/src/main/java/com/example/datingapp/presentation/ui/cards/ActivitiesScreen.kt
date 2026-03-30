@@ -138,7 +138,7 @@ fun ActivitiesScreen(
 
                     // Daily Quests
                     FeatureCard(
-                        title = if (isItMode) "Dev-челленджи" else "Ежедневные квесты",
+                        title = if (isItMode) "Челленджи для разработчиков" else "Ежедневные квесты",
                         subtitle = if (isItMode) "Мини-задачи для прокачки и нетворка" else "Выполняй и получай бонусы",
                         icon = Icons.Rounded.EmojiEvents,
                         gradientColors = listOf(AccentBlue, Color(0xFF3F51B5)),
@@ -154,7 +154,7 @@ fun ActivitiesScreen(
             // Partner Ad Banner - Flowwow
             item {
                 PartnerAdBanner(
-                    title = if (isItMode) "Tech Partner" else "Flowwow",
+                    title = if (isItMode) "Техпартнёр" else "Flowwow",
                     subtitle = if (isItMode) {
                         "Скидки на коворкинги, dev-кафе и подписки на образовательные платформы"
                     } else {

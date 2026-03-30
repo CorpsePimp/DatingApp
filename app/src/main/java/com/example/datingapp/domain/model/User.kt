@@ -109,7 +109,7 @@ fun getItDummyUsers(): List<User> = listOf(
         id = "it_1",
         name = "Артем",
         age = 27,
-        bio = "Android developer, люблю Jetpack Compose и архитектуру приложений.",
+        bio = "Android-разработчик, люблю Jetpack Compose и архитектуру приложений.",
         photoUrl = "https://picsum.photos/seed/it1/400/600",
         distance = 3,
         interests = listOf("Kotlin", "Android", "Clean Architecture")
@@ -118,7 +118,7 @@ fun getItDummyUsers(): List<User> = listOf(
         id = "it_2",
         name = "Даниил",
         age = 29,
-        bio = "Backend engineer на Kotlin/Spring, строю pet-проекты по вечерам.",
+        bio = "Бэкенд-инженер на Kotlin/Spring, вечерами делаю pet-проекты.",
         photoUrl = "https://picsum.photos/seed/it2/400/600",
         distance = 5,
         interests = listOf("Kotlin", "Spring", "PostgreSQL")
@@ -127,16 +127,16 @@ fun getItDummyUsers(): List<User> = listOf(
         id = "it_3",
         name = "Илья",
         age = 25,
-        bio = "Frontend + React, ищу команду для SaaS стартапа.",
+        bio = "Фронтенд и React, ищу команду для SaaS-стартапа.",
         photoUrl = "https://picsum.photos/seed/it3/400/600",
         distance = 2,
-        interests = listOf("React", "TypeScript", "Startup")
+        interests = listOf("React", "TypeScript", "Стартапы")
     ),
     User(
         id = "it_4",
         name = "Никита",
         age = 30,
-        bio = "DevOps, автоматизирую CI/CD и люблю оптимизировать инфраструктуру.",
+        bio = "DevOps: автоматизирую CI/CD и оптимизирую инфраструктуру.",
         photoUrl = "https://picsum.photos/seed/it4/400/600",
         distance = 4,
         interests = listOf("DevOps", "Kubernetes", "AWS")
@@ -145,18 +145,18 @@ fun getItDummyUsers(): List<User> = listOf(
         id = "it_5",
         name = "Роман",
         age = 26,
-        bio = "Data engineer, строю пайплайны и изучаю ML для продакшена.",
+        bio = "Инженер данных: пайплайны и ML для продакшена.",
         photoUrl = "https://picsum.photos/seed/it5/400/600",
         distance = 6,
-        interests = listOf("Python", "Data", "ML")
+        interests = listOf("Python", "Данные", "ML")
     ),
     User(
         id = "it_6",
         name = "Сергей",
         age = 28,
-        bio = "Product-minded fullstack, интересуют коллаборации и code review.",
+        bio = "Fullstack с продуктовым мышлением: коллаборации и ревью кода.",
         photoUrl = "https://picsum.photos/seed/it6/400/600",
         distance = 1,
-        interests = listOf("Node.js", "Product", "Mentoring")
+        interests = listOf("Node.js", "Продукт", "Менторство")
     )
 )

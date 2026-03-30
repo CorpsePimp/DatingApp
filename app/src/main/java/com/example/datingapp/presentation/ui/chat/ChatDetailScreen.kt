@@ -25,9 +25,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.datingapp.R
 import com.example.datingapp.domain.model.ChatMessage
 import com.example.datingapp.presentation.ui.theme.LocalIsItMode
 import com.example.datingapp.presentation.viewmodel.ChatDetailUiState
@@ -145,7 +147,7 @@ private fun ChatTopBar(
             IconButton(onClick = onBackClick) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                    contentDescription = "Back",
+                    contentDescription = stringResource(R.string.cd_back),
                     tint = MaterialTheme.colorScheme.onSurface
                 )
             }
@@ -164,7 +166,7 @@ private fun ChatTopBar(
                         Spacer(modifier = Modifier.width(4.dp))
                         Icon(
                             imageVector = Icons.Rounded.Verified,
-                            contentDescription = "Verified",
+                            contentDescription = stringResource(R.string.cd_verified),
                             tint = Color(0xFF1DA1F2),
                             modifier = Modifier.size(18.dp)
                         )
@@ -369,7 +371,7 @@ private fun ChatInputField(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.AttachFile,
-                    contentDescription = "Attach",
+                    contentDescription = "Вложение",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -421,7 +423,7 @@ private fun ChatInputField(
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Rounded.Send,
-                        contentDescription = "Send",
+                        contentDescription = "Отправить",
                         tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }

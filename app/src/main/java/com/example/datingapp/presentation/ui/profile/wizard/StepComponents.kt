@@ -270,7 +270,7 @@ private fun PhotoPreviewPager(
         ) { page ->
             SubcomposeAsyncImage(
                 model = photos[page],
-                contentDescription = "Photo ${page + 1}",
+                contentDescription = "Фото ${page + 1}",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize(),
                 loading = {
@@ -363,7 +363,7 @@ private fun PhotoSlot(
         if (photoUrl != null) {
             AsyncImage(
                 model = photoUrl,
-                contentDescription = "Photo $slotNumber",
+                contentDescription = "Фото $slotNumber",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
@@ -379,7 +379,7 @@ private fun PhotoSlot(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Close,
-                    contentDescription = "Remove",
+                    contentDescription = "Удалить",
                     tint = Color.White,
                     modifier = Modifier.size(16.dp)
                 )
@@ -409,7 +409,7 @@ private fun PhotoSlot(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.AddAPhoto,
-                    contentDescription = "Add photo",
+                    contentDescription = "Добавить фото",
                     tint = AccentPink,
                     modifier = Modifier.size(28.dp)
                 )
@@ -487,7 +487,7 @@ fun Step3Interests(
                     IconButton(onClick = { onSearchChange("") }) {
                         Icon(
                             imageVector = Icons.Rounded.Clear,
-                            contentDescription = "Clear",
+                            contentDescription = "Очистить",
                             tint = TextSecondary
                         )
                     }
@@ -525,7 +525,7 @@ fun Step3Interests(
                         trailingIcon = {
                             Icon(
                                 imageVector = Icons.Rounded.Close,
-                                contentDescription = "Remove",
+                                contentDescription = "Убрать",
                                 modifier = Modifier.size(16.dp)
                             )
                         },
@@ -728,7 +728,7 @@ private fun UserCardPreview(
                 ) { page ->
                     AsyncImage(
                         model = photos[page],
-                        contentDescription = "Profile photo ${page + 1}",
+                        contentDescription = "Фото профиля ${page + 1}",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )

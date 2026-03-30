@@ -22,12 +22,14 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.datingapp.R
 import com.example.datingapp.presentation.ui.auth.login.*
 import com.example.datingapp.presentation.ui.theme.*
 
@@ -106,14 +108,14 @@ fun RegisterScreen(
             )
 
             Text(
-                text = "Create Account",
+                text = stringResource(R.string.auth_register_title),
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
                 color = TextPrimary
             )
 
             Text(
-                text = "Sign up to get started",
+                text = stringResource(R.string.auth_register_subtitle),
                 style = MaterialTheme.typography.bodyLarge,
                 color = TextSecondary,
                 modifier = Modifier.padding(bottom = 48.dp)
@@ -130,8 +132,8 @@ fun RegisterScreen(
                     AuthTextField(
                         value = name,
                         onValueChange = { name = it },
-                        label = "Full Name",
-                        placeholder = "Enter your name",
+                        label = stringResource(R.string.auth_full_name_label),
+                        placeholder = stringResource(R.string.auth_full_name_placeholder),
                         leadingIcon = Icons.Rounded.Person,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text,
@@ -148,8 +150,8 @@ fun RegisterScreen(
                     AuthTextField(
                         value = email,
                         onValueChange = { email = it },
-                        label = "Email",
-                        placeholder = "Enter your email",
+                        label = stringResource(R.string.auth_email_label),
+                        placeholder = stringResource(R.string.auth_email_placeholder),
                         leadingIcon = Icons.Rounded.Email,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Email,
@@ -166,8 +168,8 @@ fun RegisterScreen(
                     AuthTextField(
                         value = password,
                         onValueChange = { password = it },
-                        label = "Password",
-                        placeholder = "Create a password",
+                        label = stringResource(R.string.auth_password_label),
+                        placeholder = stringResource(R.string.auth_create_password_placeholder),
                         leadingIcon = Icons.Rounded.Lock,
                         trailingIcon = if (passwordVisible) Icons.Rounded.Info else Icons.Rounded.Lock,
                         onTrailingIconClick = { passwordVisible = !passwordVisible },
@@ -196,8 +198,8 @@ fun RegisterScreen(
                     AuthTextField(
                         value = confirmPassword,
                         onValueChange = { confirmPassword = it },
-                        label = "Confirm Password",
-                        placeholder = "Re-enter your password",
+                        label = stringResource(R.string.auth_confirm_password_label),
+                        placeholder = stringResource(R.string.auth_confirm_password_placeholder),
                         leadingIcon = Icons.Rounded.Lock,
                         trailingIcon = if (confirmPasswordVisible) Icons.Rounded.Info else Icons.Rounded.Lock,
                         onTrailingIconClick = { confirmPasswordVisible = !confirmPasswordVisible },
@@ -233,7 +235,11 @@ fun RegisterScreen(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = if (isPasswordMatch) "Passwords match" else "Passwords don't match",
+                                text = if (isPasswordMatch) {
+                                    stringResource(R.string.auth_password_match)
+                                } else {
+                                    stringResource(R.string.auth_password_mismatch)
+                                },
                                 style = MaterialTheme.typography.bodySmall,
                                 color = if (isPasswordMatch) SuccessGreen else ErrorRed
                             )
@@ -256,12 +262,12 @@ fun RegisterScreen(
                             )
                         )
                         Text(
-                            text = "I agree to the ",
+                            text = stringResource(R.string.auth_terms_prefix),
                             style = MaterialTheme.typography.bodySmall,
                             color = TextSecondary
                         )
                         Text(
-                            text = "Terms & Conditions",
+                            text = stringResource(R.string.auth_terms_link),
                             style = MaterialTheme.typography.bodySmall,
                             color = DeepPink,
                             fontWeight = FontWeight.Bold,
@@ -273,7 +279,7 @@ fun RegisterScreen(
 
                     // Register Button
                     GradientButton(
-                        text = "Create Account",
+                        text = stringResource(R.string.auth_create_account),
                         onClick = {
                             isLoading = true
                             focusManager.clearFocus()
@@ -294,7 +300,7 @@ fun RegisterScreen(
                     ) {
                         HorizontalDivider(modifier = Modifier.weight(1f), color = TextHint.copy(alpha = 0.3f))
                         Text(
-                            text = "OR",
+                            text = stringResource(R.string.auth_or).uppercase(),
                             style = MaterialTheme.typography.bodySmall,
                             color = TextSecondary,
                             modifier = Modifier.padding(horizontal = 16.dp)
@@ -306,7 +312,7 @@ fun RegisterScreen(
 
                     // Social Login Buttons
                     SocialLoginButton(
-                        text = "Sign up with VK",
+                        text = stringResource(R.string.auth_signup_vk),
                         icon = Icons.Rounded.AccountCircle, // Replace with VK icon
                         backgroundColor = VKBlue,
                         onClick = { onRegisterSuccess() },
@@ -316,7 +322,7 @@ fun RegisterScreen(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     SocialLoginButton(
-                        text = "Sign up with Mail.ru",
+                        text = stringResource(R.string.auth_signup_mailru),
                         icon = Icons.Rounded.Email, // Replace with Mail.ru icon
                         backgroundColor = MailRuBlue,
                         onClick = { onRegisterSuccess() },
@@ -333,12 +339,12 @@ fun RegisterScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Already have an account? ",
+                    text = stringResource(R.string.auth_have_account),
                     style = MaterialTheme.typography.bodyMedium,
                     color = TextSecondary
                 )
                 Text(
-                    text = "Sign In",
+                    text = stringResource(R.string.auth_sign_in_link),
                     style = MaterialTheme.typography.bodyMedium,
                     color = DeepPink,
                     fontWeight = FontWeight.Bold,
@@ -380,12 +386,18 @@ fun PasswordStrengthIndicator(password: String) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Password strength:",
+                text = stringResource(R.string.auth_password_strength),
                 style = MaterialTheme.typography.bodySmall,
                 color = TextSecondary
             )
             Text(
-                text = strength.label,
+                text = stringResource(
+                    when (strength) {
+                        PasswordStrength.WEAK -> R.string.pwd_weak
+                        PasswordStrength.MEDIUM -> R.string.pwd_medium
+                        PasswordStrength.STRONG -> R.string.pwd_strong
+                    }
+                ),
                 style = MaterialTheme.typography.bodySmall,
                 color = color,
                 fontWeight = FontWeight.Bold
@@ -406,10 +418,10 @@ fun PasswordStrengthIndicator(password: String) {
     }
 }
 
-enum class PasswordStrength(val label: String) {
-    WEAK("Weak"),
-    MEDIUM("Medium"),
-    STRONG("Strong")
+enum class PasswordStrength {
+    WEAK,
+    MEDIUM,
+    STRONG
 }
 
 fun calculatePasswordStrength(password: String): PasswordStrength {
